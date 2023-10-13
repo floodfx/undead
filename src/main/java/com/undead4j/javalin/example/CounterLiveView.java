@@ -1,0 +1,26 @@
+package com.undead4j.javalin.example;
+
+import com.undead4j.template.Live;
+import com.undead4j.template.LiveTemplate;
+import com.undead4j.view.Meta;
+import com.undead4j.view.View;
+class Counter {
+  public int count = 0;
+}
+public class CounterLiveView implements View<Counter> {
+  private Counter counter;
+  public CounterLiveView(Counter c) {
+    this.counter = c;
+  }
+
+  @Override
+  public LiveTemplate render(Counter counter, Meta meta) {
+    return Live.HTML."""
+        Count is \{this.counter.count}
+        <br />
+        \{Live.when(this.counter.count > 0, Live.HTML."Positive", Live.HTML."Negative")}
+        <button type="button" phx-click="inc">Increment</button>
+        """;
+  }
+
+}

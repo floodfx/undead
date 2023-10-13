@@ -104,4 +104,8 @@ public class LiveTemplate {
 
     return StringTemplate.interpolate(this.raw.fragments(), newValues);
   }
+
+  public LiveTemplate noEsc() {
+    return this;
+  }
 }
