@@ -13,6 +13,18 @@ public class CounterLiveView implements View<Counter> {
     this.counter = c;
   }
 
+  public CounterLiveView() {
+
+  }
+
+  @Override
+  public void mount() {
+    System.out.println("mount called");
+    if(this.counter == null) {
+      this.counter = new Counter();
+    }
+  }
+
   @Override
   public LiveTemplate render(Counter counter, Meta meta) {
     return Live.HTML."""
