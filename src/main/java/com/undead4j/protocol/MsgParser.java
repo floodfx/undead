@@ -23,10 +23,12 @@ public class MsgParser {
     var event = raw.get(3);
     var payload = raw.get(4);
 
-    switch (joinRef) {
-      case String s -> {
+    if(joinRef != null) {
+      switch (joinRef) {
+        case String s -> {
+        }
+        default -> throw new JsonDataException("joinRef must be a string");
       }
-      default -> throw new JsonDataException("joinRef must be a string");
     }
     switch (msgRef) {
       case String s -> {
