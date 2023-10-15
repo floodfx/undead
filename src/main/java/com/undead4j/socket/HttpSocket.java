@@ -1,9 +1,12 @@
 package com.undead4j.socket;
 
+import com.undead4j.view.View;
+
 public class HttpSocket<Context> implements Socket<Context> {
   private String id;
   private String url;
   private Context context;
+  private View view;
   public HttpSocket(String id, String url) {
     this.id = id;
     this.url = url;
@@ -17,6 +20,14 @@ public class HttpSocket<Context> implements Socket<Context> {
   @Override
   public String url() {
     return this.url;
+  }
+
+  @Override
+  public View view() {
+    return this.view;
+  }
+  protected void setView(View view) {
+    this.view = view;
   }
 
   @Override

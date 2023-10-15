@@ -63,7 +63,6 @@ public class LiveTemplate {
                   Object val;
                   switch (item) {
                     case LiveTemplate tmpl -> {
-                      System.out.println("handle template!");
                       // if there is a single fragment in child template then we can
                       // just use that directly instead of full parts tree
                       if (tmpl.raw.fragments().size() == 1) {
