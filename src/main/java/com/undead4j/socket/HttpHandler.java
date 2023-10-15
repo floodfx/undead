@@ -1,7 +1,6 @@
-package com.undead4j.handle;
+package com.undead4j.socket;
 
 import com.undead4j.handle.http.RequestAdaptor;
-import com.undead4j.socket.HttpSocket;
 import com.undead4j.template.Live;
 import com.undead4j.template.PageTemplate;
 import com.undead4j.template.PageTitleConfig;
@@ -9,6 +8,7 @@ import com.undead4j.template.WrapperTemplate;
 import com.undead4j.view.Meta;
 import com.undead4j.view.View;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class HttpHandler {
@@ -35,7 +35,12 @@ public class HttpHandler {
     var socket = new HttpSocket(liveViewId, adaptor.url());
 
     // execute the `LiveView`'s `mount` function, passing in the data from the HTTP request
-    view.mount();//socket, sessionData, params
+    var params = Map.of(
+        "_csrf_token", csrfToken,
+        "_mounts", -1
+        // TODO path params
+    );
+    view.mount(socket, sessionData, params);//socket, sessionData, params
 //    await liveView.mount(
 //        liveViewSocket,
 //        { ...sessionData },
@@ -49,7 +54,7 @@ public class HttpHandler {
     }
 
     // execute the `LiveView`'s `handleParams` function, passing in the data from the HTTP request
-    view.handleParams();// url, socket
+    view.handleParams(socket);// url, socket
 
     // check for redirects in `handleParams`
     if (socket.redirect() != null) {
@@ -60,7 +65,7 @@ public class HttpHandler {
     // now render the `LiveView` including running the lifecycle of any `LiveComponent`s it contains
     var myself = 1;// counter for live_component calls
     var meta = new Meta();
-    var tmpl = view.render(socket.context(), meta);
+    var tmpl = view.render(meta);
 //  const view = await liveView.render(liveViewSocket.context, {
 //        csrfToken: sessionData.csrfToken,
 //        async live_component(

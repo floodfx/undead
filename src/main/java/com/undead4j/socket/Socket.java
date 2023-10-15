@@ -1,5 +1,7 @@
 package com.undead4j.socket;
 
+import com.undead4j.view.View;
+
 public interface Socket<Context> {
   /**
    * The id of the `LiveView` this socket is associated with
@@ -18,6 +20,7 @@ public interface Socket<Context> {
    * The current URL of the `LiveView`
    */
   public String url();
+  public View view();
   /**
    * `assign` is used to update the context (i.e. state) of the `LiveComponent`
    * @param context a `Partial` of the LiveView's context to update

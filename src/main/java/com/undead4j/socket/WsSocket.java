@@ -1,13 +1,18 @@
 package com.undead4j.socket;
 
+import com.undead4j.view.View;
+
 public class WsSocket<Context> implements Socket<Context> {
-  private String id;
-  private String url;
+  protected String id;
+  protected String url;
   private Context context;
-  public WsSocket(String id, String url) {
-    this.id = id;
-    this.url = url;
-  }
+  protected View view;
+  protected String joinRef;
+  protected String msgRef;
+  protected String csrfToken;
+  protected String redirect = "";
+
+  private WsAdaptor wsAdaptor;
 
   @Override
   public String id() {
@@ -19,9 +24,13 @@ public class WsSocket<Context> implements Socket<Context> {
     return this.url;
   }
 
+  public View view() {
+    return this.view;
+  }
+
   @Override
   public Boolean connected() {
-    return false;
+    return true;
   }
 
   @Override
@@ -50,6 +59,20 @@ public class WsSocket<Context> implements Socket<Context> {
   }
 
   public String redirect() {
-    return null;
+    return redirect;
+  }
+
+  public void handleClose() {
+    System.out.println("handlingClose:");
+    if(this.view != null) {
+      this.view.shutdown();
+    }
+  }
+
+  public void handleError(Object err) {
+    System.out.println("handlingError:"+err);
+    if(this.view != null) {
+      this.view.shutdown();
+    }
   }
 }
