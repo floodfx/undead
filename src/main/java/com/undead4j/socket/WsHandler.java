@@ -65,20 +65,28 @@ public class WsHandler {
               }
 
               // get data from params
-              var rawParams = msg.payload().get("params");
-              if (rawParams == null) {
+              var params = (Map)msg.payload().get("params");
+              if (params == null) {
                 throw new RuntimeException("params not present in payload");
               }
+              var session = (String)msg.payload().get("session");
+              // TODO decode session?
+
+              // TODO pull path params from url
+               var pathParams = liveConf.routeMatcher.pathParams(url.encodedPath(), urlStr);
+               // merge path params into params
+                params.putAll(pathParams);
+
               // configure socket
               socket.id = msg.topic();
               socket.url = urlStr;
               socket.joinRef = msg.joinRef();
               socket.msgRef = msg.msgRef();
-              socket.csrfToken = (String) ((Map) msg.payload().get("params")).get("_csrf_token");
+              socket.csrfToken = (String) params.get("_csrf_token");
               socket.view = view;
               // Join is the initalize event and the only time we call Mount on the view.
               // TODO get session data and params
-              view.mount(socket, Map.of(), Map.of());
+              view.mount(socket, Map.of(), params);
 
               // Also call HandleParams during join to give the LiveView a chance
               // to update its state based on the URL params
@@ -138,11 +146,7 @@ public class WsHandler {
               break;
             case "form":
               // for form events the payload value is a string that needs to be parsed into the data
-              // TODO parse query string into multimap?
-              var vStr = (String) msg.payload().get("value");
-              var values = Values.from(vStr);
-              System.out.println("form values:"+values + " vStr:"+vStr);
-
+              var values = Values.from((String) msg.payload().get("value"));
               // handle uploads before calling calling handleEvent
               // TODO uploads
               socket.view.handleEvent(socket, new UndeadEvent() {

@@ -21,7 +21,12 @@ public class CounterLiveView implements View {
 
   @Override
   public void mount(Socket socket, Map sessionData, Map params) {
-    this.counter.count = -1;
+    System.out.println("mount called - sessionData"+sessionData + " params: "+params);
+    if(params.get("start") != null) {
+      this.counter.count = Integer.parseInt((String)params.get("start"));
+    } else {
+      this.counter.count = 0;
+    }
   }
 
   @Override
