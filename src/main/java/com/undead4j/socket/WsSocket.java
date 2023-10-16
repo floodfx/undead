@@ -1,5 +1,8 @@
 package com.undead4j.socket;
 
+import com.undead4j.event.UndeadInfo;
+import com.undead4j.protocol.Reply;
+import com.undead4j.view.Meta;
 import com.undead4j.view.View;
 
 public class WsSocket<Context> implements Socket<Context> {
@@ -12,7 +15,7 @@ public class WsSocket<Context> implements Socket<Context> {
   protected String csrfToken;
   protected String redirect = "";
 
-  private WsAdaptor wsAdaptor;
+  protected WsAdaptor connection;
 
   @Override
   public String id() {
@@ -58,12 +61,18 @@ public class WsSocket<Context> implements Socket<Context> {
 
   }
 
+  @Override
+  public void sendInfo(UndeadInfo info) {
+    this.view.handleInfo(this, info);
+    var tmpl = this.view.render(new Meta());
+    this.connection.send(Reply.diff(this.id, tmpl.toParts()));
+  }
+
   public String redirect() {
     return redirect;
   }
 
   public void handleClose() {
-    System.out.println("handlingClose:");
     if(this.view != null) {
       this.view.shutdown();
     }
@@ -71,6 +80,7 @@ public class WsSocket<Context> implements Socket<Context> {
 
   public void handleError(Object err) {
     System.out.println("handlingError:"+err);
+    // TODO send something to client to reload?
     if(this.view != null) {
       this.view.shutdown();
     }

@@ -1,5 +1,6 @@
 package com.undead4j.socket;
 
+import com.undead4j.event.UndeadInfo;
 import com.undead4j.view.View;
 
 public class HttpSocket<Context> implements Socket<Context> {
@@ -57,6 +58,11 @@ public class HttpSocket<Context> implements Socket<Context> {
 
   @Override
   public void pushEvent(Object event) {
+
+  }
+
+  @Override
+  public void sendInfo(UndeadInfo info) {
 
   }
 

@@ -49,7 +49,7 @@ public class Reply {
     return listAdaptor.toJson(data);
   }
 
-  public static String diff(Msg orig, Map parts)  {
+  public static String replyDiff(Msg orig, Map parts)  {
     var data = new ArrayList();
     data.add(orig.joinRef());
     data.add(orig.msgRef());
@@ -63,4 +63,23 @@ public class Reply {
     ));
     return listAdaptor.toJson(data);
   }
+
+  public static String diff(String topic, Map diff) {
+    var data = new ArrayList();
+    data.add(null);
+    data.add(null); // empty msgRef
+    data.add(topic);
+    data.add("diff");
+    data.add(diff);
+    return listAdaptor.toJson(data);
+  }
+//
+//  func NewDiff(joinRef *string, topic string, diff []byte) *Diff {
+//    return &Diff{
+//      JoinRef: joinRef,
+//          Topic:   topic,
+//          Event:   "diff",
+//          Payload: diff,
+//    }
+//  }
 }
