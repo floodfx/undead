@@ -11,9 +11,28 @@ import java.util.Map;
 public class JavalinRouteMatcher implements RouteMatcher {
   private RoutingConfig routingConfig;
   private Map<String,Class> routeRegistry;
+
   public JavalinRouteMatcher(RoutingConfig routingConfig) {
     this.routingConfig = routingConfig;
     this.routeRegistry = new LinkedHashMap();
+  }
+
+  public Map pathParams(String path, String url) {
+    // first find the matching path regex in the routeRegistry
+    var pathRegex = "";
+    for(var entry : this.routeRegistry.entrySet()) {
+      var parser = new PathParser(entry.getKey(), this.routingConfig);
+      if(parser.matches(path)) {
+        pathRegex = entry.getKey();
+        break;
+      }
+    }
+    if(pathRegex.equals("")) {
+      throw new RuntimeException("unable to find matching path regex for path:" + path);
+    }
+    // now extract the path params
+    var parser = new PathParser(pathRegex, this.routingConfig);
+    return parser.extractPathParams(path);
   }
 
   @Override
@@ -33,7 +52,7 @@ public class JavalinRouteMatcher implements RouteMatcher {
   }
 
   @Override
-  public void addRoute(String path, View view) {
-    this.routeRegistry.put(path, view.getClass());
+  public void addRoute(String pathRegex, View view) {
+    this.routeRegistry.put(pathRegex, view.getClass());
   }
 }
