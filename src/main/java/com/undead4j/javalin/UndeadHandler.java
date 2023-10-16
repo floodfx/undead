@@ -1,7 +1,6 @@
 package com.undead4j.javalin;
 
 import com.undead4j.Config;
-import com.undead4j.handle.http.JavalinRequestAdaptor;
 import com.undead4j.socket.HttpHandler;
 import com.undead4j.template.PageTitleConfig;
 import com.undead4j.view.View;
