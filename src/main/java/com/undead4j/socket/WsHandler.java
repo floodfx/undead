@@ -1,7 +1,8 @@
 package com.undead4j.socket;
 
 import com.undead4j.Config;
-import com.undead4j.event.UndeadEvent;
+import com.undead4j.event.SimpleUndeadEvent;
+import com.undead4j.javalin.JavalinWsAdaptor;
 import com.undead4j.protocol.MsgParser;
 import com.undead4j.protocol.Reply;
 import com.undead4j.template.LiveTemplate;
@@ -84,6 +85,7 @@ public class WsHandler {
               socket.msgRef = msg.msgRef();
               socket.csrfToken = (String) params.get("_csrf_token");
               socket.view = view;
+              socket.connection = new JavalinWsAdaptor(ctx);
               // Join is the initalize event and the only time we call Mount on the view.
               // TODO get session data and params
               view.mount(socket, Map.of(), params);
@@ -131,17 +133,7 @@ public class WsHandler {
                 // TODO implement clear flash
                 throw new RuntimeException("clear flash not implemented");
               } else {
-                socket.view.handleEvent(socket, new UndeadEvent() {
-                  @Override
-                  public String type() {
-                    return payloadEvent;
-                  }
-
-                  @Override
-                  public Values data() {
-                    return payloadValues;
-                  }
-                });
+                socket.view.handleEvent(socket, new SimpleUndeadEvent(payloadEvent, payloadValues));
               }
               break;
             case "form":
@@ -149,17 +141,7 @@ public class WsHandler {
               var values = Values.from((String) msg.payload().get("value"));
               // handle uploads before calling calling handleEvent
               // TODO uploads
-              socket.view.handleEvent(socket, new UndeadEvent() {
-                @Override
-                public String type() {
-                  return payloadEvent;
-                }
-
-                @Override
-                public Values data() {
-                  return values;
-                }
-              });
+              socket.view.handleEvent(socket, new SimpleUndeadEvent(payloadEvent, values));
               break;
             default:
               throw new RuntimeException("unknown event type:" + payloadEventType);
@@ -172,7 +154,7 @@ public class WsHandler {
           // otherwise rerender
           var content = socket.view().render(new Meta());
           var parts = content.toParts();
-          ctx.send(Reply.diff(msg, parts));
+          ctx.send(Reply.replyDiff(msg, parts));
           break;
         default:
           throw new RuntimeException("unhandled event:" + msg.event());
