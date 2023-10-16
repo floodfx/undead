@@ -2,6 +2,8 @@ package com.undead4j.javalin.example;
 
 import com.undead4j.Config;
 import com.undead4j.javalin.UndeadHandler;
+import com.undead4j.javalin.example.view.UndeadCounter;
+import com.undead4j.javalin.example.view.UndeadSalesDashboard;
 import com.undead4j.socket.WsHandler;
 import com.undead4j.template.LiveTemplate;
 import com.undead4j.template.PageTemplate;
@@ -20,7 +22,7 @@ public class Server {
       public LiveTemplate render(PageTitleConfig pageTitleConfig, String csrfToken, LiveTemplate content) {
         return HTML. """
             <!DOCTYPE html>
-            <html lang="en" class="h-full bg-white">
+            <html lang="en">
               <head>
                 <meta charset="utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -33,7 +35,7 @@ public class Server {
                 <script src="https://cdn.tailwindcss.com"></script>
               </head>
               <body>
-                <div class="navbar bg-base-100">
+                <div class="navbar bg-base-100 mb-4">
                   <a class="btn btn-ghost normal-case text-xl">🧟Undead4j</a>
                 </div>
                 <!-- Embedded LiveView -->
@@ -52,8 +54,9 @@ public class Server {
           });
         }), liveConf)
         // use the UndeadJavalin instance to register Undead4j routes
-        .undead("/count", new UndeadHandler(liveConf, new CounterLiveView()))
-        .undead("/count/{start}", new UndeadHandler(liveConf, new CounterLiveView()))
+        .undead("/count", new UndeadHandler(liveConf, new UndeadCounter()))
+        .undead("/count/{start}", new UndeadHandler(liveConf, new UndeadCounter()))
+        .undead("/dashboard", new UndeadHandler(liveConf, new UndeadSalesDashboard()))
         .javalin() // get the underlying Javalin instance from UndeadJavalin
         .get("/", ctx -> {
           ctx.result("Hello");
