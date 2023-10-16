@@ -7,9 +7,7 @@ import com.undead4j.template.LiveTemplate;
 import com.undead4j.template.PageTemplate;
 import com.undead4j.template.PageTitleConfig;
 import io.javalin.Javalin;
-import io.javalin.config.RoutingConfig;
 import io.javalin.http.staticfiles.Location;
-import io.javalin.routing.PathParser;
 
 import static com.undead4j.template.Live.HTML;
 import static com.undead4j.template.Live.NO_ESC;
@@ -53,13 +51,10 @@ public class Server {
             staticFileConfig.hostedPath = "/js";
           });
         }), liveConf)
+        // use the UndeadJavalin instance to register Undead4j routes
         .undead("/count", new UndeadHandler(liveConf, new CounterLiveView()))
-        .get("/count/{start}", ctx -> {
-
-          var parser = new PathParser("/count/{start}", new RoutingConfig());
-          System.out.println("Matches:" + parser.matches(ctx.path()) + " matches:" + parser.matches("/count"));
-          ctx.result("You are here because " + ctx.path() + " matches " + ctx.matchedPath() + " paramMap " + ctx.pathParamMap());
-        })
+        .undead("/count/{start}", new UndeadHandler(liveConf, new CounterLiveView()))
+        .javalin() // get the underlying Javalin instance from UndeadJavalin
         .get("/", ctx -> {
           ctx.result("Hello");
           ctx.contentType("text/html");
