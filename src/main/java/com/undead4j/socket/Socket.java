@@ -1,5 +1,6 @@
 package com.undead4j.socket;
 
+import com.undead4j.event.UndeadInfo;
 import com.undead4j.view.View;
 
 public interface Socket<Context> {
@@ -91,7 +92,7 @@ public interface Socket<Context> {
    *
    * @param event the event to send to `handleInfo`
    */
-//  public void sendInfo(Object info);
+  public void sendInfo(UndeadInfo info);
   /**
    * Subscribe to the given topic using pub/sub. Events published to this topic
    * will be delivered to `handleInfo`.
