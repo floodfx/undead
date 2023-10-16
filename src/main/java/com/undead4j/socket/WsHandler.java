@@ -14,26 +14,38 @@ import okhttp3.HttpUrl;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class WsHandler {
 
-  private WsSocket socket;
+  private Map<String,WsSocket> socketRegistry = new ConcurrentHashMap<>();
+
+  private WsSocket getOrCreateSocket(String id) {
+    var socket = socketRegistry.get(id);
+    if (socket == null) {
+      socket = new WsSocket();
+      socketRegistry.put(id, socket);
+    }
+    return socket;
+  }
+
+  private WsSocket getSocket(String id) {
+    return socketRegistry.get(id);
+  }
 
   public WsHandler(Config liveConf, WsConfig ws) {
-    socket = new WsSocket();
     ws.onConnect(ctx -> {
-      System.out.println("Connected:" + ctx.getSessionId());
-      // liveview sends heartbeat every 30 seconds which is default idleTimeout
+      // client sends heartbeat every 30 seconds which is default idleTimeout
       // so we need to extend default idle timeout to longer
       ctx.session.setIdleTimeout(Duration.of(45, ChronoUnit.SECONDS));
     });
     ws.onError(err -> {
-      System.out.println("error:" + err + " " + err.error());
-      socket.handleError(err);
+      // give socket a chance to handle error
+      getOrCreateSocket(err.getSessionId()).handleError(err);
     });
     ws.onClose(ctx -> {
-      System.out.println("Closed:" + ctx.getSessionId());
-      socket.handleClose();
+      // give socket a chance to handle close / cleanup
+      getOrCreateSocket(ctx.getSessionId()).handleClose();
     });
     ws.onMessage(ctx -> {
       var msg = new MsgParser().parseJSON(ctx.message());
@@ -79,6 +91,7 @@ public class WsHandler {
                 params.putAll(pathParams);
 
               // configure socket
+              var socket = getOrCreateSocket(ctx.getSessionId());
               socket.id = msg.topic();
               socket.url = urlStr;
               socket.joinRef = msg.joinRef();
@@ -133,6 +146,7 @@ public class WsHandler {
                 // TODO implement clear flash
                 throw new RuntimeException("clear flash not implemented");
               } else {
+                var socket = getSocket(ctx.getSessionId());
                 socket.view.handleEvent(socket, new SimpleUndeadEvent(payloadEvent, payloadValues));
               }
               break;
@@ -141,12 +155,14 @@ public class WsHandler {
               var values = Values.from((String) msg.payload().get("value"));
               // handle uploads before calling calling handleEvent
               // TODO uploads
+              var socket = getSocket(ctx.getSessionId());
               socket.view.handleEvent(socket, new SimpleUndeadEvent(payloadEvent, values));
               break;
             default:
               throw new RuntimeException("unknown event type:" + payloadEventType);
           }
           // check if we have a redirect
+          var socket = getSocket(ctx.getSessionId());
           if (socket != null && !socket.redirect().isEmpty()) {
             ctx.send(Reply.redirect(msg, socket.redirect()));
             break;
