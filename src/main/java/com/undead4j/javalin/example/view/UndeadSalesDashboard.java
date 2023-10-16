@@ -10,6 +10,7 @@ import com.undead4j.view.Meta;
 import com.undead4j.view.View;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -61,7 +62,7 @@ public class UndeadSalesDashboard implements View {
   public LiveTemplate render(Meta meta) {
     return Live.HTML."""
       <div class="flex flex-col mx-4 space-y-4">
-        <div class="stats stats-vertical lg:stats-horizontal shadow">
+        <div class="stats stats-vertical md:stats-horizontal shadow">
 
           <div class="stat">
             <div class="stat-title">🥡 New Orders</div>
@@ -102,7 +103,7 @@ public class UndeadSalesDashboard implements View {
   }
 
   private BigDecimal randomPrice() {
-    return new BigDecimal(Math.random() * 100).setScale(2, BigDecimal.ROUND_HALF_UP);
+    return BigDecimal.valueOf(Math.random() * 100).setScale(2, RoundingMode.HALF_UP);
   }
 
   private int randomRating() {
