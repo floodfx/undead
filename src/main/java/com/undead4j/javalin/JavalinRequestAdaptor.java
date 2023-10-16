@@ -1,5 +1,6 @@
-package com.undead4j.handle.http;
+package com.undead4j.javalin;
 
+import com.undead4j.handle.http.RequestAdaptor;
 import io.javalin.http.Context;
 
 import java.util.Map;
