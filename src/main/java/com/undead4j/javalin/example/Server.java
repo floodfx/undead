@@ -30,7 +30,7 @@ public class Server {
                 <meta name="csrf-token" content="\{ csrfToken }" />
                 \{ this.liveTitle(pageTitleConfig) }
                 <script defer type="text/javascript" src="/js/index.js"></script>
-                <!-- Tailwind CSS: we recommend replacing this with your own CSS -->
+                <!-- DaisyUI + Tailwind CSS: we recommend replacing this with your own CSS/Components -->
                 <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.2/dist/full.css" rel="stylesheet" type="text/css" />
                 <script src="https://cdn.tailwindcss.com"></script>
               </head>
@@ -46,13 +46,13 @@ public class Server {
       }
     };
 
-    var app = new UndeadJavalin(Javalin.create(config -> {
+    var app = new UndeadJavalin(Javalin.create(config ->
           config.staticFiles.add(staticFileConfig -> {
             staticFileConfig.directory = "/public/js";
             staticFileConfig.location = Location.CLASSPATH;
             staticFileConfig.hostedPath = "/js";
-          });
-        }), liveConf)
+          })
+        ), liveConf)
         // use the UndeadJavalin instance to register Undead4j routes
         .undead("/count", new UndeadHandler(liveConf, new UndeadCounter()))
         .undead("/count/{start}", new UndeadHandler(liveConf, new UndeadCounter()))
@@ -64,7 +64,7 @@ public class Server {
         })
         .start(7070);
 
-    app.ws("/live/websocket", ws -> { new WsHandler(liveConf, ws);});
+    app.ws("/live/websocket", ws -> new WsHandler(liveConf, ws));
   }
 }
 

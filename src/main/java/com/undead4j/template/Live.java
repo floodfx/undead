@@ -4,8 +4,6 @@ import java.util.List;
 
 public class Live {
 
-
-
   public static final StringTemplate.Processor<LiveTemplate, RuntimeException> HTML =
       template -> {
         return new LiveTemplate(template);
