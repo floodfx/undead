@@ -8,7 +8,7 @@ import io.javalin.config.RoutingConfig;
 import io.javalin.http.HandlerType;
 import org.jetbrains.annotations.NotNull;
 
-public class UndeadJavalin extends Javalin {
+public class UndeadJavalin {
   private Config config;
   private Javalin app;
   private RoutingConfig routingConfig;
@@ -19,8 +19,17 @@ public class UndeadJavalin extends Javalin {
     this.config.routeMatcher = new JavalinRouteMatcher(this.app.cfg.routing);
   }
 
-  public Javalin undead(@NotNull String path, @NotNull UndeadHandler handler) {
+  public UndeadJavalin undead(@NotNull String path, @NotNull UndeadHandler handler) {
     this.config.routeMatcher.addRoute(path, handler.view());
-    return app.addHandler(HandlerType.GET, path, handler);
+    app.addHandler(HandlerType.GET, path, handler);
+    return this;
   }
+  public UndeadJavalin live(@NotNull String path, @NotNull UndeadHandler handler) {
+    return this.undead(path, handler);
+  }
+
+  public Javalin javalin() {
+    return this.app;
+  }
+
 }
