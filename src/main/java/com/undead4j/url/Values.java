@@ -2,8 +2,13 @@ package com.undead4j.url;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.net.URLEncodedUtils;
 
-import java.net.URLDecoder;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Values {
@@ -17,22 +22,22 @@ public class Values {
     return v;
   }
 
-  public static Values from(String query) {
+  public static Values from(String urlEncoded) {
     var values = new Values();
-    var pairs = query.split("&");
-    for (var pair : pairs) {
-      var kv = pair.split("=");
-      if (kv.length > 1) {
-        // TODO url decode
-        try {
-        var val = URLDecoder.decode(kv[1].replace("+", "%2B"), "UTF-8")
-            .replace("%2B", "+");
-
-        values.add(kv[0], val);
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        }
+    // URLEncodedUtils doesn't like query strings without a leading "?"
+    if(!urlEncoded.startsWith("?")) {
+      urlEncoded = "?" + urlEncoded;
+    }
+    try {
+      // URLEncodedUtils handles spaces and "+" correctly whereas URLDecoder does not
+      List<NameValuePair> params = URLEncodedUtils.parse(new URI(urlEncoded), StandardCharsets.UTF_8);
+      // iterate over params creating a Map<String,Object> handling multiple values for the same key
+      var map = new HashMap<String, Object>();
+      for (NameValuePair param : params) {
+        values.add(param.getName(), param.getValue());
       }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
     return values;
   }
@@ -60,12 +65,26 @@ public class Values {
     return null;
   }
 
-  public String[] getAll(String key) {
+  public List<String> getAll(String key) {
     var v = this.values.get(key);
-    return v.toArray(new String[v.size()]);
+    return List.copyOf(v);
   }
 
   public String toString() {
     return this.values.toString();
+  }
+
+  public Map<String, Object> asMap() {
+    // convert to Map<String, Object> where object is either a String or List<String>
+    // depending on if there are multiple values for the same key or not
+    var map = new HashMap<String, Object>();
+    for (var key : this.values.keySet()) {
+      if (this.values.get(key).size() == 1) {
+        map.put(key, this.values.get(key).iterator().next());
+        continue;
+      }
+      map.put(key, List.copyOf(this.values.get(key)));
+    }
+    return map;
   }
 }
