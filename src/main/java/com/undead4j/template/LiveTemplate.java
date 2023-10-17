@@ -35,6 +35,9 @@ public class LiveTemplate {
 
   static final String escapeHTML(Object input) {
     switch (input) {
+      case null -> {
+        return "";
+      }
       case LiveTemplate t -> {
         return t.toString();
       }
@@ -62,6 +65,9 @@ public class LiveTemplate {
                   var item = this.raw.values().get(i);
                   Object val;
                   switch (item) {
+                    case null -> {
+                      val = "";
+                    }
                     case LiveTemplate tmpl -> {
                       // if there is a single fragment in child template then we can
                       // just use that directly instead of full parts tree
