@@ -13,14 +13,14 @@ public interface View {
   }
   public default void handleEvent(Socket socket, UndeadEvent event){
     // if we get an event, tell the developer they need to implement this
-    throw new RuntimeException("Not implemented");
+    throw new RuntimeException("Implement handleEvent in your view");
   }
   public default void handleParams(Socket socket){
     // empty implementation is ok
   }
   public default void handleInfo(Socket socket, UndeadInfo info) {
     // if we get an info, tell the developer they need to implement this
-    throw new RuntimeException("Not implemented");
+    throw new RuntimeException("Implement handleInfo in your view");
   }
   public LiveTemplate render(Meta meta);
   public default void shutdown(){
