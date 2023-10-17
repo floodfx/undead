@@ -4,6 +4,7 @@ import com.undead4j.Config;
 import com.undead4j.javalin.UndeadHandler;
 import com.undead4j.javalin.example.view.UndeadCounter;
 import com.undead4j.javalin.example.view.UndeadSalesDashboard;
+import com.undead4j.javalin.example.view.UndeadUserForm;
 import com.undead4j.socket.WsHandler;
 import com.undead4j.template.LiveTemplate;
 import com.undead4j.template.PageTemplate;
@@ -57,6 +58,7 @@ public class Server {
         .undead("/count", new UndeadHandler(liveConf, new UndeadCounter()))
         .undead("/count/{start}", new UndeadHandler(liveConf, new UndeadCounter()))
         .undead("/dashboard", new UndeadHandler(liveConf, new UndeadSalesDashboard()))
+        .undead("/user/new", new UndeadHandler(liveConf, new UndeadUserForm()))
         .javalin() // get the underlying Javalin instance from UndeadJavalin
         .get("/", ctx -> {
           ctx.result("Hello");
