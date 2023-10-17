@@ -57,6 +57,20 @@ public class Values {
     this.values.containsKey(key);
   }
 
+  public void set(String key, Object value) {
+    this.values.removeAll(key);
+    switch(value) {
+      case String s -> this.values.put(key, s);
+      case List l -> {
+        for (Object o : l) {
+          this.values.put(key, String.valueOf(o));
+        }
+      }
+      // throw error?
+      default -> this.values.put(key, String.valueOf(value));
+    }
+  }
+
   public String get(String key) {
     var v = this.values.get(key);
     if (v.size() > 0) {
