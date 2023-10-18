@@ -13,6 +13,12 @@ import java.util.Map;
 
 public class Values {
 
+  private final Multimap<String, String> values;
+
+  public Values() {
+    this.values = ArrayListMultimap.create();
+  }
+
   // create Values from map
   public static Values from(Map<String, String> map) {
     var v = new Values();
@@ -25,7 +31,7 @@ public class Values {
   public static Values from(String urlEncoded) {
     var values = new Values();
     // URLEncodedUtils doesn't like query strings without a leading "?"
-    if(!urlEncoded.startsWith("?")) {
+    if (!urlEncoded.startsWith("?")) {
       urlEncoded = "?" + urlEncoded;
     }
     try {
@@ -42,13 +48,10 @@ public class Values {
     return values;
   }
 
-  private Multimap<String, String> values;
-  public Values() {
-    this.values = ArrayListMultimap.create();
-  }
   public void add(String key, String value) {
     this.values.put(key, value);
   }
+
   public void delete(String key) {
     this.values.removeAll(key);
   }
@@ -59,7 +62,7 @@ public class Values {
 
   public void set(String key, Object value) {
     this.values.removeAll(key);
-    switch(value) {
+    switch (value) {
       case String s -> this.values.put(key, s);
       case List l -> {
         for (Object o : l) {

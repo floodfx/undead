@@ -9,8 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class JavalinRouteMatcher implements RouteMatcher {
-  private RoutingConfig routingConfig;
-  private Map<String,Class> routeRegistry;
+  private final RoutingConfig routingConfig;
+  private final Map<String, Class> routeRegistry;
 
   public JavalinRouteMatcher(RoutingConfig routingConfig) {
     this.routingConfig = routingConfig;
@@ -20,14 +20,14 @@ public class JavalinRouteMatcher implements RouteMatcher {
   public Map pathParams(String path, String url) {
     // first find the matching path regex in the routeRegistry
     var pathRegex = "";
-    for(var entry : this.routeRegistry.entrySet()) {
+    for (var entry : this.routeRegistry.entrySet()) {
       var parser = new PathParser(entry.getKey(), this.routingConfig);
-      if(parser.matches(path)) {
+      if (parser.matches(path)) {
         pathRegex = entry.getKey();
         break;
       }
     }
-    if(pathRegex.equals("")) {
+    if (pathRegex.equals("")) {
       throw new RuntimeException("unable to find matching path regex for path:" + path);
     }
     // now extract the path params
@@ -38,12 +38,12 @@ public class JavalinRouteMatcher implements RouteMatcher {
   @Override
   public View matches(String path) {
     // iterate through map keys trying to find a match using PathParser
-    for(var entry : this.routeRegistry.entrySet()) {
+    for (var entry : this.routeRegistry.entrySet()) {
       var parser = new PathParser(entry.getKey(), this.routingConfig);
-      if(parser.matches(path)) {
+      if (parser.matches(path)) {
         try {
-          return (View)entry.getValue().newInstance();
-        } catch(Exception e) {
+          return (View) entry.getValue().newInstance();
+        } catch (Exception e) {
           throw new RuntimeException(e);
         }
       }

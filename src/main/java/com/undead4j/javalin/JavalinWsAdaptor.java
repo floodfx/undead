@@ -4,7 +4,8 @@ import com.undead4j.socket.WsAdaptor;
 import io.javalin.websocket.WsContext;
 
 public class JavalinWsAdaptor implements WsAdaptor {
-  private WsContext ws;
+  private final WsContext ws;
+
   public JavalinWsAdaptor(WsContext ws) {
     this.ws = ws;
   }

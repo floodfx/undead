@@ -21,7 +21,7 @@ public class UrlTest {
   public void TestValuesWithURLEncoded() {
     var myName = URLEncoder.encode("my name", StandardCharsets.UTF_8);
     var myVal = URLDecoder.decode(myName, StandardCharsets.UTF_8);
-    System.out.println("myName:" + myName +" myVal:" + myVal);
+    System.out.println("myName:" + myName + " myVal:" + myVal);
     var values = Values.from("name=my+name&name=foo&age=24&_target=name");
     assertEquals(List.of("my name", "foo"), values.getAll("name"));
     assertEquals("24", values.get("age"));
@@ -34,7 +34,7 @@ public class UrlTest {
   }
 
   @Test
-  public void ParseURLEncoded() throws java.net.URISyntaxException{
+  public void ParseURLEncoded() throws java.net.URISyntaxException {
     String bodyStr = "?name=my+name&name=foo&age=24&_target=name";
     List<NameValuePair> params = URLEncodedUtils.parse(new URI(bodyStr), StandardCharsets.UTF_8);
     // iterate over params creating a Map<String,Object> handling multiple values for the same key

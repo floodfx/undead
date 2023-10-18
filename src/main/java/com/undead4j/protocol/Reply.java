@@ -10,6 +10,7 @@ import java.util.Map;
 public class Reply {
   private static final Moshi moshi = new Moshi.Builder().build();
   private static final JsonAdapter<List> listAdaptor = moshi.adapter(List.class);
+
   public static String rendered(Msg orig, Map parts) {
     var data = List.of(
         orig.joinRef(),
@@ -49,7 +50,7 @@ public class Reply {
     return listAdaptor.toJson(data);
   }
 
-  public static String replyDiff(Msg orig, Map parts)  {
+  public static String replyDiff(Msg orig, Map parts) {
     var data = new ArrayList();
     data.add(orig.joinRef());
     data.add(orig.msgRef());

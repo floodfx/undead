@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Config {
-  private Map<String, Class> viewRegistry = new ConcurrentHashMap<>();
   public PageTemplate pageTemplate;
   public WrapperTemplate wrapperTemplate;
   public RouteMatcher routeMatcher;
+  private final Map<String, Class> viewRegistry = new ConcurrentHashMap<>();
 
 }

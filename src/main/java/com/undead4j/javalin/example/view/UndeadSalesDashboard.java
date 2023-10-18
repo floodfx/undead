@@ -28,7 +28,7 @@ public class UndeadSalesDashboard implements View {
   @Override
   public void mount(Socket socket, Map sessionData, Map params) {
     // start timer task if we're connected (i.e. not http request)
-    if(socket.connected()) {
+    if (socket.connected()) {
       this.timer = new Timer();
       this.timer.schedule(new TimerTask() {
         public void run() {
@@ -40,14 +40,14 @@ public class UndeadSalesDashboard implements View {
 
   @Override
   public void handleInfo(Socket socket, UndeadInfo info) {
-    if(info.type().equals("refresh")) {
+    if (info.type().equals("refresh")) {
       this.doRefresh();
     }
   }
 
   @Override
   public void handleEvent(Socket socket, UndeadEvent event) {
-    if(event.type().equals("refresh")) {
+    if (event.type().equals("refresh")) {
       this.doRefresh();
     }
   }
@@ -60,23 +60,23 @@ public class UndeadSalesDashboard implements View {
 
   @Override
   public LiveTemplate render(Meta meta) {
-    return Live.HTML."""
+    return Live.HTML. """
       <div class="flex flex-col mx-4 space-y-4">
         <div class="stats stats-vertical md:stats-horizontal shadow">
 
           <div class="stat">
             <div class="stat-title">🥡 New Orders</div>
-            <div class="stat-value">\{newOrders}</div>
+            <div class="stat-value">\{ newOrders }</div>
           </div>
 
           <div class="stat">
             <div class="stat-title">💰 Sales Amount</div>
-            <div class="stat-value">$\{(salesAmount)}</div>
+            <div class="stat-value">$\{ (salesAmount) }</div>
           </div>
 
           <div class="stat">
             <div class="stat-title">🌟 Rating</div>
-            <div class="stat-value">\{ratingToStars(rating)}</div>
+            <div class="stat-value">\{ ratingToStars(rating) }</div>
           </div>
 
         </div>
@@ -84,15 +84,16 @@ public class UndeadSalesDashboard implements View {
         <button class="btn btn-primary" phx-click="refresh">↻ Refresh</button>
         </div>
       </div>
-        """;
+        """ ;
   }
+
   private String ratingToStars(int rating) {
     String stars = "";
     var i = 0;
-    for(; i < rating; i++) {
+    for (; i < rating; i++) {
       stars += "⭐";
     }
-    for(; i < 5; i++) {
+    for (; i < 5; i++) {
       stars += "☆";
     }
     return stars;

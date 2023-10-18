@@ -12,13 +12,13 @@ import java.util.*;
 
 public class Form<T> {
 
-  private ObjectMapper mapper;
-  private Validator validator;
-  private Values values;
-  private Values changes;
-  private Class clazz;
+  private final ObjectMapper mapper;
+  private final Validator validator;
+  private final Values values;
+  private final Values changes;
+  private final Class clazz;
   private String action;
-  private Set<String> touched;
+  private final Set<String> touched;
   private T model;
   private Map<String, String> errors;
 
@@ -34,7 +34,7 @@ public class Form<T> {
     this.changes = new Values();
     this.clazz = clazz;
     this.errors = new HashMap<>();
-    this.model = (T)mapper.convertValue(values.asMap(), clazz);
+    this.model = (T) mapper.convertValue(values.asMap(), clazz);
   }
 
   public void update(Values newValues, String action) {
@@ -43,7 +43,7 @@ public class Form<T> {
     // merge old and new data and calculate changes
     newValues.asMap().forEach((k, v) -> {
       if (values.get(k) == null || !values.get(k).equals(v)) {
-        switch(v) {
+        switch (v) {
           case String s -> changes.add(k, s);
           case List l -> {
             for (Object o : l) {
@@ -64,9 +64,9 @@ public class Form<T> {
       changes.add(target, "");
     }
     // validate if action is not empty
-    if(!Strings.isNullOrEmpty(action)) {
+    if (!Strings.isNullOrEmpty(action)) {
       // map values to model
-      model = (T)mapper.convertValue(values.asMap(), clazz);
+      model = (T) mapper.convertValue(values.asMap(), clazz);
       // validate model
       var violations = validator.validate(model);
       // convert violations to errors
@@ -78,11 +78,10 @@ public class Form<T> {
       // if we get a _target field in the form, use it to indicate which fields were touched
       // if not, assume all fields in input were touched and all fields
       // with errors were touched
-      if(target != null) {
+      if (target != null) {
         this.touched.add(target);
-      }
-      else {
-        for(var k : values.asMap().keySet()) {
+      } else {
+        for (var k : values.asMap().keySet()) {
           this.touched.add(k);
         }
         for (var e : errors.keySet()) {
@@ -97,7 +96,7 @@ public class Form<T> {
   }
 
   public String errorFor(String key) {
-    if(errors == null || errors.get(key) == null || touched == null || !touched.contains(key) || valid()) {
+    if (errors == null || errors.get(key) == null || touched == null || !touched.contains(key) || valid()) {
       return null;
     }
     return this.errors.get(key);
@@ -121,15 +120,15 @@ public class Form<T> {
 
   public boolean valid() {
     // no action or empty errors means is always valid
-    if(Strings.isNullOrEmpty(action) || errors().isEmpty() || touched.isEmpty()) {
+    if (Strings.isNullOrEmpty(action) || errors().isEmpty() || touched.isEmpty()) {
       return true;
     }
     // if nothing was touched the changeset is valid
     // regardless of whether or not there are errors
     // otherwise, only check for errors on touched fields
     // and return false if there are any errors
-    for(String k : touched) {
-      if(errors().containsKey(k)) {
+    for (String k : touched) {
+      if (errors().containsKey(k)) {
         return false;
       }
     }

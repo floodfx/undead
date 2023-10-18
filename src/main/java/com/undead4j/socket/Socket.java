@@ -7,26 +7,33 @@ public interface Socket<Context> {
   /**
    * The id of the `LiveView` this socket is associated with
    */
-   public String id();
+  String id();
+
   /**
    * Whether the websocket is connected.
    * true if connected to a websocket, false for http request
    */
-  public Boolean connected();
+  Boolean connected();
+
   /**
    * The current context (i.e. state) of the `LiveView`
    */
-  public Context context();
+  Context context();
+
   /**
    * The current URL of the `LiveView`
    */
-  public String url();
-  public View view();
+  String url();
+
+  View view();
+
   /**
    * `assign` is used to update the context (i.e. state) of the `LiveComponent`
+   *
    * @param context a `Partial` of the LiveView's context to update
    */
-  public void assign(Context ctx);
+  void assign(Context ctx);
+
   /**
    * Marks any set properties as temporary and will be reset to the given
    * value after the next render cycle.  Typically used to ensure large but
@@ -34,14 +41,16 @@ public interface Socket<Context> {
    *
    * @param context a partial of the context that should be temporary and the value to reset it to
    */
-  public void tempAssign(Context ctx);
+  void tempAssign(Context ctx);
+
   /**
    * Updates the `<title>` tag of the `LiveView` page.  Requires using the
    * `live_title` helper in rendering the page.
    *
    * @param newPageTitle the new text value of the page - note the prefix and suffix will not be changed
    */
-  public void pageTitle(String newTitle);
+  void pageTitle(String newTitle);
+
   /**
    * Pushes and event (possibly with data) from the server to the client.  Requires
    * either a `window.addEventListener` defined for that event or a client `Hook`
@@ -49,7 +58,7 @@ public interface Socket<Context> {
    *
    * @param pushEvent the event to push to the client
    */
-  public void pushEvent(Object event);
+  void pushEvent(Object event);
   /**
    * Updates the LiveView's browser URL with the given path and query parameters.
    *
@@ -87,12 +96,13 @@ public interface Socket<Context> {
    * @param value the flash value
    */
 //  public void putFlash(String key, String value);
+
   /**
    * Send an internal event (a.k.a "Info") to the LiveView's `handleInfo` method
    *
    * @param event the event to send to `handleInfo`
    */
-  public void sendInfo(UndeadInfo info);
+  void sendInfo(UndeadInfo info);
   /**
    * Subscribe to the given topic using pub/sub. Events published to this topic
    * will be delivered to `handleInfo`.

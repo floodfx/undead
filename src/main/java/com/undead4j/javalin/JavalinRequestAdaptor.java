@@ -6,8 +6,9 @@ import io.javalin.http.Context;
 import java.util.Map;
 
 public class JavalinRequestAdaptor implements RequestAdaptor {
-  private Context ctx;
+  private final Context ctx;
   private String redirectURL;
+
   public JavalinRequestAdaptor(Context ctx) {
     this.ctx = ctx;
   }

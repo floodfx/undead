@@ -9,8 +9,8 @@ import io.javalin.http.HandlerType;
 import org.jetbrains.annotations.NotNull;
 
 public class UndeadJavalin {
-  private Config config;
-  private Javalin app;
+  private final Config config;
+  private final Javalin app;
   private RoutingConfig routingConfig;
 
   public UndeadJavalin(Javalin app, Config config) {
@@ -24,6 +24,7 @@ public class UndeadJavalin {
     app.addHandler(HandlerType.GET, path, handler);
     return this;
   }
+
   public UndeadJavalin live(@NotNull String path, @NotNull UndeadHandler handler) {
     return this.undead(path, handler);
   }

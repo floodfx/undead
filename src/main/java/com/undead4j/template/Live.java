@@ -15,7 +15,7 @@ public class Live {
    * NO_ESC ensures no additional escaping occurs
    */
   public static LiveTemplate NO_ESC(Object obj) {
-    switch(obj) {
+    switch (obj) {
       case LiveTemplate lt -> {
         return lt;
       }
@@ -27,7 +27,7 @@ public class Live {
   }
 
   public static LiveTemplate when(Boolean cond, LiveTemplate trueCase, LiveTemplate falseCase) {
-    if(cond) {
+    if (cond) {
       return trueCase;
     }
     return falseCase;

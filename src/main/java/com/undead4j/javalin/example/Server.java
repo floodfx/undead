@@ -48,12 +48,12 @@ public class Server {
     };
 
     var app = new UndeadJavalin(Javalin.create(config ->
-          config.staticFiles.add(staticFileConfig -> {
-            staticFileConfig.directory = "/public/js";
-            staticFileConfig.location = Location.CLASSPATH;
-            staticFileConfig.hostedPath = "/js";
-          })
-        ), liveConf)
+        config.staticFiles.add(staticFileConfig -> {
+          staticFileConfig.directory = "/public/js";
+          staticFileConfig.location = Location.CLASSPATH;
+          staticFileConfig.hostedPath = "/js";
+        })
+    ), liveConf)
         // use the UndeadJavalin instance to register Undead4j routes
         .undead("/count", new UndeadHandler(liveConf, new UndeadCounter()))
         .undead("/count/{start}", new UndeadHandler(liveConf, new UndeadCounter()))

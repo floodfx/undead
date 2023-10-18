@@ -1,22 +1,22 @@
 package com.undead4j.template;
 
-import static com.undead4j.template.Live.*;
+import static com.undead4j.template.Live.HTML;
 
-public interface PageTemplate{
-  public LiveTemplate render(
+public interface PageTemplate {
+  LiveTemplate render(
       PageTitleConfig pageTitleConfig,
       String csrfToken,
       LiveTemplate content
   );
 
-  public default LiveTemplate liveTitle(PageTitleConfig pageTitleConfig) {
-    return HTML."""
+  default LiveTemplate liveTitle(PageTitleConfig pageTitleConfig) {
+    return HTML. """
         <title
-          \{HTML." data-prefix='\{pageTitleConfig.prefix()}'"}
-          \{HTML." data-suffix='\{pageTitleConfig.suffix()}'"}
+          \{ HTML. " data-prefix='\{ pageTitleConfig.prefix() }'" }
+          \{ HTML. " data-suffix='\{ pageTitleConfig.suffix() }'" }
         >
-          \{pageTitleConfig.title()}
+          \{ pageTitleConfig.title() }
         </title>
-    """;
+    """ ;
   }
 }

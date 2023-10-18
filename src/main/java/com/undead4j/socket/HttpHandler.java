@@ -26,7 +26,7 @@ public class HttpHandler {
 
     // extract csrf token from session data or generate it if it doesn't exist
     var sessionData = adaptor.sessionData();
-    var csrfToken = (String)sessionData.get("_csrf_token");
+    var csrfToken = (String) sessionData.get("_csrf_token");
     if (csrfToken == null) {
       csrfToken = UUID.randomUUID().toString();
       sessionData.put("_csrf_token", csrfToken);
@@ -72,7 +72,7 @@ public class HttpHandler {
 //        liveComponent: LiveComponent,
 //        params?: Partial<unknown & { id: string | number }>
 //    ): Promise<LiveViewTemplate> {
-      // params may be empty if the `LiveComponent` doesn't have any params
+    // params may be empty if the `LiveComponent` doesn't have any params
 //      params = params ?? {};
 //      delete params.id; // remove id before passing to socket
 //
@@ -98,10 +98,10 @@ public class HttpHandler {
     // now that we've rendered the `LiveView` and its `LiveComponent`s, we can serialize the session data
     // to be passed into the websocket connection
 
-  var serializedSession = "";//await serDe.serialize({ ...sessionData });
+    var serializedSession = "";//await serDe.serialize({ ...sessionData });
 
     // TODO implement tracking of statics
-     var serializedStatics = "";//serDe.serialize({ ...view.statics });
+    var serializedStatics = "";//serDe.serialize({ ...view.statics });
 //  const serializedStatics = "";
 
     // optionally render the `LiveView` inside another template passing the session data
@@ -113,15 +113,15 @@ public class HttpHandler {
 
     // wrap `LiveView` content inside the `phx-main` template along with the serialized
     // session data and the generated live view ID for the websocket connection
-  var rootContent = Live.HTML."""
+    var rootContent = Live.HTML. """
     <div
     data-phx-main="true"
-    data-phx-session="\{serializedSession}"
-    data-phx-static="\{serializedStatics}"
-    id="phx-\{liveViewId}">
-        \{content}
+    data-phx-session="\{ serializedSession }"
+    data-phx-static="\{ serializedStatics }"
+    id="phx-\{ liveViewId }">
+        \{ content }
     </div>
-  """;
+  """ ;
 
     // finally render the `LiveView` root template passing any pageTitle data, the CSRF token,  and the rendered `LiveView`
     var pageTmpl = pageTemplate.render(pageTitleConfig, csrfToken, rootContent);

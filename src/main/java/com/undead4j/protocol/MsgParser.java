@@ -11,6 +11,7 @@ import java.util.Map;
 public class MsgParser {
   private final Moshi moshi;
   private final JsonAdapter<List> jsonAdapter;
+
   public MsgParser() {
     this.moshi = new Moshi.Builder().build();
     this.jsonAdapter = moshi.adapter(List.class);
@@ -27,7 +28,7 @@ public class MsgParser {
     var event = raw.get(3);
     var payload = raw.get(4);
 
-    if(joinRef != null) {
+    if (joinRef != null) {
       switch (joinRef) {
         case String s -> {
         }

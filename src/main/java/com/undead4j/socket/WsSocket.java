@@ -8,14 +8,13 @@ import com.undead4j.view.View;
 public class WsSocket<Context> implements Socket<Context> {
   protected String id;
   protected String url;
-  private Context context;
   protected View view;
   protected String joinRef;
   protected String msgRef;
   protected String csrfToken;
   protected String redirect = "";
-
   protected WsAdaptor connection;
+  private Context context;
 
   @Override
   public String id() {
@@ -73,15 +72,15 @@ public class WsSocket<Context> implements Socket<Context> {
   }
 
   public void handleClose() {
-    if(this.view != null) {
+    if (this.view != null) {
       this.view.shutdown();
     }
   }
 
   public void handleError(Object err) {
-    System.out.println("handlingError:"+err);
+    System.out.println("handlingError:" + err);
     // TODO send something to client to reload?
-    if(this.view != null) {
+    if (this.view != null) {
       this.view.shutdown();
     }
   }

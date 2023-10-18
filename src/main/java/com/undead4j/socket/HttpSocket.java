@@ -4,10 +4,11 @@ import com.undead4j.event.UndeadInfo;
 import com.undead4j.view.View;
 
 public class HttpSocket<Context> implements Socket<Context> {
-  private String id;
-  private String url;
+  private final String id;
+  private final String url;
   private Context context;
   private View view;
+
   public HttpSocket(String id, String url) {
     this.id = id;
     this.url = url;
@@ -27,6 +28,7 @@ public class HttpSocket<Context> implements Socket<Context> {
   public View view() {
     return this.view;
   }
+
   protected void setView(View view) {
     this.view = view;
   }
@@ -51,7 +53,7 @@ public class HttpSocket<Context> implements Socket<Context> {
 
   }
 
-    @Override
+  @Override
   public void pageTitle(String newTitle) {
 
   }

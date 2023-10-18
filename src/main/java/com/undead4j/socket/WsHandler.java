@@ -18,20 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class WsHandler {
 
-  private Map<String,WsSocket> socketRegistry = new ConcurrentHashMap<>();
-
-  private WsSocket getOrCreateSocket(String id) {
-    var socket = socketRegistry.get(id);
-    if (socket == null) {
-      socket = new WsSocket();
-      socketRegistry.put(id, socket);
-    }
-    return socket;
-  }
-
-  private WsSocket getSocket(String id) {
-    return socketRegistry.get(id);
-  }
+  private final Map<String, WsSocket> socketRegistry = new ConcurrentHashMap<>();
 
   public WsHandler(Config liveConf, WsConfig ws) {
     ws.onConnect(ctx -> {
@@ -78,17 +65,17 @@ public class WsHandler {
               }
 
               // get data from params
-              var params = (Map)msg.payload().get("params");
+              var params = (Map) msg.payload().get("params");
               if (params == null) {
                 throw new RuntimeException("params not present in payload");
               }
-              var session = (String)msg.payload().get("session");
+              var session = (String) msg.payload().get("session");
               // TODO decode session?
 
               // TODO pull path params from url
-               var pathParams = liveConf.routeMatcher.pathParams(url.encodedPath(), urlStr);
-               // merge path params into params
-                params.putAll(pathParams);
+              var pathParams = liveConf.routeMatcher.pathParams(url.encodedPath(), urlStr);
+              // merge path params into params
+              params.putAll(pathParams);
 
               // configure socket
               var socket = getOrCreateSocket(ctx.getSessionId());
@@ -177,5 +164,18 @@ public class WsHandler {
       }
 
     });
+  }
+
+  private WsSocket getOrCreateSocket(String id) {
+    var socket = socketRegistry.get(id);
+    if (socket == null) {
+      socket = new WsSocket();
+      socketRegistry.put(id, socket);
+    }
+    return socket;
+  }
+
+  private WsSocket getSocket(String id) {
+    return socketRegistry.get(id);
   }
 }
