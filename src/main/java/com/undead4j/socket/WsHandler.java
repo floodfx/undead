@@ -5,7 +5,7 @@ import com.undead4j.event.SimpleUndeadEvent;
 import com.undead4j.javalin.JavalinWsAdaptor;
 import com.undead4j.protocol.MsgParser;
 import com.undead4j.protocol.Reply;
-import com.undead4j.template.LiveTemplate;
+import com.undead4j.template.UndeadTemplate;
 import com.undead4j.url.Values;
 import com.undead4j.view.Meta;
 import io.javalin.websocket.WsConfig;
@@ -113,7 +113,7 @@ public class WsHandler {
           var payloadEvent = (String) msg.payload().get("event");
           // TODO handle components
           // var cid = (String)msg.payload().get("cid");
-          LiveTemplate tmpl;
+          UndeadTemplate tmpl;
           switch (payloadEventType) {
             case "click":
             case "keyup":

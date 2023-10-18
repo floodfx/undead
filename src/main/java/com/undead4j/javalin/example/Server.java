@@ -6,21 +6,21 @@ import com.undead4j.javalin.example.view.UndeadCounter;
 import com.undead4j.javalin.example.view.UndeadSalesDashboard;
 import com.undead4j.javalin.example.view.UndeadUserForm;
 import com.undead4j.socket.WsHandler;
-import com.undead4j.template.LiveTemplate;
+import com.undead4j.template.UndeadTemplate;
 import com.undead4j.template.PageTemplate;
 import com.undead4j.template.PageTitleConfig;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 
-import static com.undead4j.template.Live.HTML;
-import static com.undead4j.template.Live.NO_ESC;
+import static com.undead4j.template.Undead.HTML;
+import static com.undead4j.template.Undead.NO_ESC;
 
 public class Server {
   public static void main(String[] args) {
     var liveConf = new Config();
     liveConf.pageTemplate = new PageTemplate() {
       @Override
-      public LiveTemplate render(PageTitleConfig pageTitleConfig, String csrfToken, LiveTemplate content) {
+      public UndeadTemplate render(PageTitleConfig pageTitleConfig, String csrfToken, UndeadTemplate content) {
         return HTML. """
             <!DOCTYPE html>
             <html lang="en">

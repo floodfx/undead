@@ -4,14 +4,14 @@ import com.undead4j.event.UndeadEvent;
 import com.undead4j.form.Form;
 import com.undead4j.javalin.example.view.model.UserModel;
 import com.undead4j.socket.Socket;
-import com.undead4j.template.LiveTemplate;
+import com.undead4j.template.UndeadTemplate;
 import com.undead4j.url.Values;
 import com.undead4j.view.Meta;
 import com.undead4j.view.View;
 
 import static com.undead4j.javalin.example.view.component.Input.ErrorMsg;
 import static com.undead4j.javalin.example.view.component.Input.TextInput;
-import static com.undead4j.template.Live.*;
+import static com.undead4j.template.Undead.*;
 
 public class UndeadUserForm implements View {
 
@@ -41,7 +41,7 @@ public class UndeadUserForm implements View {
   }
 
   @Override
-  public LiveTemplate render(Meta meta) {
+  public UndeadTemplate render(Meta meta) {
     return HTML. """
       <form class="form" phx-change="validate" phx-submit="submit">
         <div class="flex flex-col space-y-4 mx-4 w-[250px]">
@@ -58,7 +58,7 @@ public class UndeadUserForm implements View {
       \{ maybeShowUser(user) }""" ;
   }
 
-  private LiveTemplate maybeShowUser(UserModel user) {
+  private UndeadTemplate maybeShowUser(UserModel user) {
     if (user == null) {
       return EMPTY;
     }

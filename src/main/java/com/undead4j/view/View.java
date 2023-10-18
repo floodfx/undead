@@ -3,7 +3,7 @@ package com.undead4j.view;
 import com.undead4j.event.UndeadEvent;
 import com.undead4j.event.UndeadInfo;
 import com.undead4j.socket.Socket;
-import com.undead4j.template.LiveTemplate;
+import com.undead4j.template.UndeadTemplate;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public interface View {
     throw new RuntimeException("Implement handleInfo in your view");
   }
 
-  LiveTemplate render(Meta meta);
+  UndeadTemplate render(Meta meta);
 
   default void shutdown() {
     // empty implementation is ok

@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class LiveTemplate {
+public class UndeadTemplate {
   static final Map<String, String> ENTITIES =
       Map.of(
           "&", "&amp;",
@@ -20,7 +20,7 @@ public class LiveTemplate {
   static final Pattern ENT_REGEX = Pattern.compile(String.join("|", ENTITIES.keySet()));
   private final StringTemplate raw;
 
-  public LiveTemplate(StringTemplate template) {
+  public UndeadTemplate(StringTemplate template) {
     this.raw = template;
   }
 
@@ -38,7 +38,7 @@ public class LiveTemplate {
       case null -> {
         return "";
       }
-      case LiveTemplate t -> {
+      case UndeadTemplate t -> {
         return t.toString();
       }
       case ArrayList a -> {
@@ -68,7 +68,7 @@ public class LiveTemplate {
                     case null -> {
                       val = "";
                     }
-                    case LiveTemplate tmpl -> {
+                    case UndeadTemplate tmpl -> {
                       // if there is a single fragment in child template then we can
                       // just use that directly instead of full parts tree
                       if (tmpl.raw.fragments().size() == 1) {
@@ -110,7 +110,7 @@ public class LiveTemplate {
     return StringTemplate.interpolate(this.raw.fragments(), newValues);
   }
 
-  public LiveTemplate noEsc() {
+  public UndeadTemplate noEsc() {
     return this;
   }
 }

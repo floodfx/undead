@@ -1,15 +1,15 @@
 package com.undead4j.template;
 
-import static com.undead4j.template.Live.HTML;
+import static com.undead4j.template.Undead.HTML;
 
 public interface PageTemplate {
-  LiveTemplate render(
+  UndeadTemplate render(
       PageTitleConfig pageTitleConfig,
       String csrfToken,
-      LiveTemplate content
+      UndeadTemplate content
   );
 
-  default LiveTemplate liveTitle(PageTitleConfig pageTitleConfig) {
+  default UndeadTemplate liveTitle(PageTitleConfig pageTitleConfig) {
     return HTML. """
         <title
           \{ HTML. " data-prefix='\{ pageTitleConfig.prefix() }'" }

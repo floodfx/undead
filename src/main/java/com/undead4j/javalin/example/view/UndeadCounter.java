@@ -2,8 +2,8 @@ package com.undead4j.javalin.example.view;
 
 import com.undead4j.event.UndeadEvent;
 import com.undead4j.socket.Socket;
-import com.undead4j.template.Live;
-import com.undead4j.template.LiveTemplate;
+import com.undead4j.template.Undead;
+import com.undead4j.template.UndeadTemplate;
 import com.undead4j.view.Meta;
 import com.undead4j.view.View;
 
@@ -37,11 +37,11 @@ public class UndeadCounter implements View {
   }
 
   @Override
-  public LiveTemplate render(Meta meta) {
-    return Live.HTML. """
+  public UndeadTemplate render(Meta meta) {
+    return Undead.HTML. """
       <div class="flex flex-col space-y-4 mx-4">
         <h2 class="text-2xl">Count:
-          <span class="\{ Live.when(count > 0, Live.HTML."text-success", Live.HTML."text-warning") }">
+          <span class="\{ Undead.when(count > 0, Undead.HTML."text-success", Undead.HTML."text-warning") }">
             \{ count }
           </span>
         </h2>

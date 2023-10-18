@@ -1,7 +1,7 @@
 package com.undead4j.socket;
 
 import com.undead4j.handle.http.RequestAdaptor;
-import com.undead4j.template.Live;
+import com.undead4j.template.Undead;
 import com.undead4j.template.PageTemplate;
 import com.undead4j.template.PageTitleConfig;
 import com.undead4j.template.WrapperTemplate;
@@ -106,14 +106,14 @@ public class HttpHandler {
 
     // optionally render the `LiveView` inside another template passing the session data
     // and the rendered `LiveView` to the template renderer
-    var content = Live.NO_ESC(tmpl);
+    var content = Undead.NO_ESC(tmpl);
     if (wrapperTemplate != null) {
-      content = Live.NO_ESC(wrapperTemplate.render(sessionData, content));
+      content = Undead.NO_ESC(wrapperTemplate.render(sessionData, content));
     }
 
     // wrap `LiveView` content inside the `phx-main` template along with the serialized
     // session data and the generated live view ID for the websocket connection
-    var rootContent = Live.HTML. """
+    var rootContent = Undead.HTML. """
     <div
     data-phx-main="true"
     data-phx-session="\{ serializedSession }"

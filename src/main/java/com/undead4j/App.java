@@ -1,6 +1,6 @@
 package com.undead4j;
 
-import static com.undead4j.template.Live.HTML;
+import static com.undead4j.template.Undead.HTML;
 import static java.lang.StringTemplate.RAW;
 
 /**

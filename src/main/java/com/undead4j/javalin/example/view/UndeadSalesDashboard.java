@@ -4,8 +4,8 @@ import com.undead4j.event.SimpleUndeadInfo;
 import com.undead4j.event.UndeadEvent;
 import com.undead4j.event.UndeadInfo;
 import com.undead4j.socket.Socket;
-import com.undead4j.template.Live;
-import com.undead4j.template.LiveTemplate;
+import com.undead4j.template.Undead;
+import com.undead4j.template.UndeadTemplate;
 import com.undead4j.view.Meta;
 import com.undead4j.view.View;
 
@@ -59,8 +59,8 @@ public class UndeadSalesDashboard implements View {
   }
 
   @Override
-  public LiveTemplate render(Meta meta) {
-    return Live.HTML. """
+  public UndeadTemplate render(Meta meta) {
+    return Undead.HTML. """
       <div class="flex flex-col mx-4 space-y-4">
         <div class="stats stats-vertical md:stats-horizontal shadow">
 
