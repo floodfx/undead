@@ -52,7 +52,7 @@ public class UndeadUserForm implements View {
           <label for="email">Email</label>
           \{ TextInput(form, "email", "input input-bordered") }
           \{ ErrorMsg(form, "email") }
-          <button \{ when(!form.valid(), HTML." disabled", EMPTY) } class="btn btn-primary" type="button" phx-click="submit">Submit</button>
+          <button \{ When(!form.valid(), HTML." disabled", EMPTY) } class="btn btn-primary" type="button" phx-click="submit">Submit</button>
         </div>
       </form>
       \{ maybeShowUser(user) }""" ;
