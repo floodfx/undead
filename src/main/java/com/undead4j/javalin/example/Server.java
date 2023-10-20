@@ -13,7 +13,7 @@ import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 
 import static com.undead4j.template.Undead.HTML;
-import static com.undead4j.template.Undead.NO_ESC;
+import static com.undead4j.template.Undead.NoEscape;
 
 public class Server {
   public static void main(String[] args) {
@@ -40,7 +40,7 @@ public class Server {
                   <a class="btn btn-ghost normal-case text-xl">🧟Undead4j</a>
                 </div>
                 <!-- Embedded LiveView -->
-                \{ NO_ESC(content) }
+                \{ NoEscape(content) }
               </body>
             </html>
             """ ;

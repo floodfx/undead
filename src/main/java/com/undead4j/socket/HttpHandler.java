@@ -106,9 +106,9 @@ public class HttpHandler {
 
     // optionally render the `LiveView` inside another template passing the session data
     // and the rendered `LiveView` to the template renderer
-    var content = Undead.NO_ESC(tmpl);
+    var content = Undead.NoEscape(tmpl);
     if (wrapperTemplate != null) {
-      content = Undead.NO_ESC(wrapperTemplate.render(sessionData, content));
+      content = Undead.NoEscape(wrapperTemplate.render(sessionData, content));
     }
 
     // wrap `LiveView` content inside the `phx-main` template along with the serialized
