@@ -1,5 +1,7 @@
 package com.undead4j.template;
 
+import com.undead4j.js.JS;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,6 +45,9 @@ public class UndeadTemplate {
       }
       case UndeadTemplate t -> {
         return t.toString();
+      }
+      case JS js -> {
+        return escapeHTML(js.toJSON());
       }
       case List l -> {
         // get first element of list to determine type
@@ -158,6 +163,10 @@ public class UndeadTemplate {
                         // recurse into child template
                         val = tmpl.toParts();
                       }
+                    }
+                    case JS js -> {
+                      // TODO peek if in attribute with single or double quotes and if single then don't escape
+                      val = escapeHTML(js);
                     }
                     case ArrayList arr -> {
                       throw new RuntimeException("Implement array list" + arr);

@@ -178,9 +178,30 @@ HTML."""
 
 ```
 
-### Using Undead Templates for "DeadView" (i.e. traditional) HTML rendering
+### Using Undead Templates for "DeadViews" (i.e. traditional) HTML rendering
 It is fine to use Undead Templates to render HTML outside of LiveViews so feel free to do so. You can use the `Undead.HTML` processor
 the same way and call `toString()` on it to get the rendered HTML.
+
+## Javascript Commands
+Undead provides a number of Javascript commands that can be used to show/hide elements, add/remove classes, dispatch events, etc.  These commands are
+called JS Commands and can be part of the Undead Template you define in a `View`s `render` function.  JS Commands are loaded on the client-side
+when the template is rendered and executed based on user interactions.  JS Commands are a powerful way to manipulate the DOM without having to write javascript.  
+Below is a list of the commands:
+ * `show` - Show an element
+ * `hide` - Hide an element
+ * `toggle` - Toggle the visibility of an element
+ * `addClass` - Add the given class to an element
+ * `removeClass` - Remove the given class from an element
+ * `setAttr` - Set the given attribute on an element
+ * `removeAttr` - Remove the given attribute from an element
+ * `push` - Push the given event to the server
+ * `dispatch` - Dispatch a client-side event from an element
+
+See the JS Commands javadocs for more details on each command and its options.
+
+## Is Undead available on Maven Central?
+Not yet! It seems to be a process to get a project on Maven Central so I'm still working on that.  In the meantime, you can build it locally
+and use it in your project.  I'll update this section when it is available on Maven Central.
 
 ## Why did you write Undead?
 LiveViews (a.k.a UndeadViews 🧟) are an awesome, new paradigm for building dynamic front-end experience and I wanted to see if how hard it would be to
