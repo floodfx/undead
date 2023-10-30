@@ -1,19 +1,34 @@
 package com.undead4j.socket;
 
 import com.undead4j.handle.http.RequestAdaptor;
-import com.undead4j.template.Undead;
+import com.undead4j.template.Directive;
 import com.undead4j.template.PageTemplate;
 import com.undead4j.template.PageTitleConfig;
 import com.undead4j.template.WrapperTemplate;
 import com.undead4j.view.Meta;
 import com.undead4j.view.View;
+import okhttp3.HttpUrl;
 
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * HttpHandler handles the HTTP request lifecycle for a {@link View} and either
+ * returns the rendered HTML or redirects the request.
+ */
 public class HttpHandler {
 
-  public String handle(
+/**
+   * Handle the HTTP request lifecycle for a {@link View} and either
+   * return the rendered HTML or redirect the request.
+   * @param view the {@link View} to render
+   * @param pageTemplate the {@link PageTemplate} to render the {@link View} inside
+   * @param adaptor the {@link RequestAdaptor} to pull data from the HTTP request
+   * @param pageTitleConfig the {@link PageTitleConfig} to pass to the {@link PageTemplate}
+   * @param wrapperTemplate the optional {@link WrapperTemplate} to render the {@link View} inside
+   * @return the rendered HTML or null if the request was redirected
+   */
+  static public String handle(
       View view,
       PageTemplate pageTemplate,
       RequestAdaptor adaptor,
@@ -41,20 +56,16 @@ public class HttpHandler {
         // TODO path params
     );
     view.mount(socket, sessionData, params);//socket, sessionData, params
-//    await liveView.mount(
-//        liveViewSocket,
-//        { ...sessionData },
-//    { _csrf_token: sessionData._csrf_token, _mounts: -1, ...pathParams }
-//  );
 
     // check for redirects in `mount`
     if (socket.redirect() != null) {
       adaptor.willRedirect(socket.redirect());
       return null;
     }
+    var url = HttpUrl.parse(adaptor.url());
 
     // execute the `LiveView`'s `handleParams` function, passing in the data from the HTTP request
-    view.handleParams(socket);// url, socket
+    view.handleParams(socket, url.uri(), params);
 
     // check for redirects in `handleParams`
     if (socket.redirect() != null) {
@@ -106,22 +117,22 @@ public class HttpHandler {
 
     // optionally render the `LiveView` inside another template passing the session data
     // and the rendered `LiveView` to the template renderer
-    var content = Undead.NoEscape(tmpl);
+    var content = tmpl;
     if (wrapperTemplate != null) {
-      content = Undead.NoEscape(wrapperTemplate.render(sessionData, content));
+      content = wrapperTemplate.render(sessionData, content);
     }
 
     // wrap `LiveView` content inside the `phx-main` template along with the serialized
     // session data and the generated live view ID for the websocket connection
-    var rootContent = Undead.HTML. """
-    <div
-    data-phx-main="true"
-    data-phx-session="\{ serializedSession }"
-    data-phx-static="\{ serializedStatics }"
-    id="phx-\{ liveViewId }">
-        \{ content }
-    </div>
-  """ ;
+    var rootContent = Directive.HTML. """
+      <div
+      data-phx-main="true"
+      data-phx-session="\{ serializedSession }"
+      data-phx-static="\{ serializedStatics }"
+      id="ud-\{ liveViewId }">
+          \{ Directive.NoEscape(content) }
+      </div>
+    """ ;
 
     // finally render the `LiveView` root template passing any pageTitle data, the CSRF token,  and the rendered `LiveView`
     var pageTmpl = pageTemplate.render(pageTitleConfig, csrfToken, rootContent);

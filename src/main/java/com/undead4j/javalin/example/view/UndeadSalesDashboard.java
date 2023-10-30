@@ -4,7 +4,7 @@ import com.undead4j.event.SimpleUndeadInfo;
 import com.undead4j.event.UndeadEvent;
 import com.undead4j.event.UndeadInfo;
 import com.undead4j.socket.Socket;
-import com.undead4j.template.Undead;
+import com.undead4j.template.Directive;
 import com.undead4j.template.UndeadTemplate;
 import com.undead4j.view.Meta;
 import com.undead4j.view.View;
@@ -15,6 +15,10 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * UndeadSalesDashboard is a simple example of a liveview that displays some stats that
+ * refresh every second.
+ */
 public class UndeadSalesDashboard implements View {
   private int newOrders;
   private BigDecimal salesAmount;
@@ -60,7 +64,7 @@ public class UndeadSalesDashboard implements View {
 
   @Override
   public UndeadTemplate render(Meta meta) {
-    return Undead.HTML. """
+    return Directive.HTML. """
       <div class="flex flex-col mx-4 space-y-4">
         <div class="stats stats-vertical md:stats-horizontal shadow">
 
@@ -81,7 +85,7 @@ public class UndeadSalesDashboard implements View {
 
         </div>
         <div>
-        <button class="btn btn-primary" phx-click="refresh">↻ Refresh</button>
+        <button class="btn btn-primary" ud-click="refresh">↻ Refresh</button>
         </div>
       </div>
         """ ;

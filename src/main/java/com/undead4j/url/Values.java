@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Values is a convenience wrapper around Multimap<String,String>.  It represents
+ * the data associated with an {@link com.undead4j.event.UndeadEvent} including events sent via
+ * {@link com.undead4j.js.JS#push} along with query string parameters and form data.
+ */
 public class Values {
 
   private final Multimap<String, String> values;
@@ -19,7 +24,11 @@ public class Values {
     this.values = ArrayListMultimap.create();
   }
 
-  // create Values from map
+  /**
+   * from creates a Values object from a Map<String,String>
+   * @param map the map to create the Values object from
+   * @return a Values object
+   */
   public static Values from(Map<String, String> map) {
     var v = new Values();
     for (var key : map.keySet()) {
@@ -28,6 +37,11 @@ public class Values {
     return v;
   }
 
+  /**
+   * from creates a Values object from a url encoded string
+   * @param urlEncoded the encoded string to create the Values object from
+   * @return a Values object
+   */
   public static Values from(String urlEncoded) {
     var values = new Values();
     // URLEncodedUtils doesn't like query strings without a leading "?"
@@ -48,18 +62,37 @@ public class Values {
     return values;
   }
 
+  /**
+   * add adds a key/value pair to the Values object
+   * @param key the key to add
+   * @param value the value to add
+   */
   public void add(String key, String value) {
     this.values.put(key, value);
   }
 
+  /**
+   * remove removes a key/value pair from the Values object
+   * @param key the key to remove
+   */
   public void delete(String key) {
     this.values.removeAll(key);
   }
 
+  /**
+   * has returns true if the Values object contains the key
+   * @param key the key to check
+   */
   public void has(String key) {
     this.values.containsKey(key);
   }
 
+  /**
+   * set sets the value for the given key.  If the value is a String, it is set as is.  If the value is a List,
+   * each value in the list is set.  Otherwise, the value is converted to a String and set.
+   * @param key the key to set
+   * @param value the value to set
+   */
   public void set(String key, Object value) {
     this.values.removeAll(key);
     switch (value) {
@@ -74,6 +107,11 @@ public class Values {
     }
   }
 
+  /**
+   * get returns the first value for the given key or null if the key does not exist
+   * @param key the key to get
+   * @return the first value for the given key or null if the key does not exist
+   */
   public String get(String key) {
     var v = this.values.get(key);
     if (v.size() > 0) {
@@ -82,15 +120,24 @@ public class Values {
     return null;
   }
 
+  /**
+   * getAll returns all values for the given key or an empty list if the key does not exist
+   * @param key the key to get
+   * @return all values for the given key or an empty list if the key does not exist
+   */
   public List<String> getAll(String key) {
     var v = this.values.get(key);
     return List.copyOf(v);
   }
 
-  public String toString() {
-    return this.values.toString();
-  }
+  // TODO
+//  public String urlEncode() {
+//  }
 
+  /**
+   * asMap returns the Values object as a Map<String,Object> where Object is either a String or List<String>
+   * @return the Values object as a Map<String,Object>
+   */
   public Map<String, Object> asMap() {
     // convert to Map<String, Object> where object is either a String or List<String>
     // depending on if there are multiple values for the same key or not
@@ -103,5 +150,14 @@ public class Values {
       map.put(key, List.copyOf(this.values.get(key)));
     }
     return map;
+  }
+
+  /**
+   * toString returns the keys and values in the Values
+   * Note: this is not suitable for use in a query string
+   * @return the Values object as a url encoded string
+   */
+  public String toString() {
+    return this.values.toString();
   }
 }

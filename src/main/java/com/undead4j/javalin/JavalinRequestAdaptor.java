@@ -3,8 +3,13 @@ package com.undead4j.javalin;
 import com.undead4j.handle.http.RequestAdaptor;
 import io.javalin.http.Context;
 
+import java.util.List;
 import java.util.Map;
 
+/**
+ * JavalinRequestAdaptor is an implementation of {@link RequestAdaptor} for Javalin
+ * HTTP requests.
+ */
 public class JavalinRequestAdaptor implements RequestAdaptor {
   private final Context ctx;
   private String redirectURL;
@@ -29,8 +34,13 @@ public class JavalinRequestAdaptor implements RequestAdaptor {
   }
 
   @Override
-  public Map pathParams() {
+  public Map<String, String> pathParams() {
     return ctx.pathParamMap();
+  }
+
+  @Override
+  public Map<String, List<String>> queryParams() {
+    return ctx.queryParamMap();
   }
 
   @Override

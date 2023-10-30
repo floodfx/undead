@@ -8,12 +8,19 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A Javalin {@link Handler} that handles the HTTP request lifecycle of Undead {@link View}s
+ */
 public class UndeadHandler implements Handler {
   private final Config config;
   private final View view;
-
   private PageTitleConfig pageTitleConfig;
 
+  /**
+   * Constructs a new {@link UndeadHandler} with the given {@link Config} and {@link View}.
+   * @param config the {@link Config} to use
+   * @param view the {@link View} to render
+   */
   public UndeadHandler(Config config, View view) {
     this.config = config;
     this.view = view;
@@ -31,7 +38,7 @@ public class UndeadHandler implements Handler {
 
   @Override
   public void handle(@NotNull Context ctx) throws Exception {
-    var res = new HttpHandler().handle(
+    var res = HttpHandler.handle(
         this.view.getClass().newInstance(),
         this.config.pageTemplate,
         new JavalinRequestAdaptor(ctx),
