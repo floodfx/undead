@@ -7,8 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * JS command builder for creating client side JS commands that interact with
- * the client DOM from the server.
+ * JS is a helper class for building JS commands that are rendered in {@link com.undead4j.template.UndeadTemplate}s.
+ * JS provides a number of methods that make it easier to manipulate the DOM, dispatch client-side events,
+ * and push events (and data) to the server.
+ *
+ * Here is an example of using JS to toggle the visibility of an element:
+ * <pre>{@code
+ *    // in your {@link com.undead4j.view.View#render} method ...
+ *    public UndeadTemplate render() {
+ *      return Undead.HTML."""
+ *        <div id="my-div" class="hidden">Hello World!</div>
+ *        <button ud-click="\{ JS.toggle("#my-div") }">Toggle</button>
+ *      """ ;
+ *    }
+ * }</pre>
+ *
+ * JS commands are "chainable" so you can build up a list of commands to execute in order.
+ * For example, the following hides an element and pushes an event to the server:
+ * <pre>{@code
+ *   // in your {@link com.undead4j.view.View#render} method ...
+ *   return Undead.HTML."""
+ *    <button ud-click="\{ JS.hide("#my-div").push("my-event") }">Hide</button>
+ *   """ ;
+ * }</pre>
+ *
  */
 public class JS {
 
