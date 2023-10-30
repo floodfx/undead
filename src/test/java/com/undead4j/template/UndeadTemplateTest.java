@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.undead4j.template.Undead.*;
+import static com.undead4j.template.Directive.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UndeadTemplateTest {
