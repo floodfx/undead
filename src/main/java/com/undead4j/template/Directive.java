@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Undead {
+public class Directive {
 
   /**
    * HTML is a string template processor that escapes all HTML entities in the template.
@@ -67,14 +67,14 @@ public class Undead {
 
 
   /**
-   * When models a ternary operator in a template.  If the condition is true the trueCase is returned
+   * If models a ternary operator in a template.  If the condition is true the trueCase is returned
    * otherwise the falseCase is returned.
    * @param cond condition to test
    * @param trueCase template to return if condition is true
    * @param falseCase template to return if condition is false
    * @return trueCase if condition is true otherwise falseCase
    */
-  public static UndeadTemplate When(Boolean cond, UndeadTemplate trueCase, UndeadTemplate falseCase) {
+  public static UndeadTemplate If(Boolean cond, UndeadTemplate trueCase, UndeadTemplate falseCase) {
     if (cond) {
       return trueCase;
     }
@@ -82,7 +82,7 @@ public class Undead {
   }
 
   /**
-   * When models a ternary operator in a template.  If the condition is true the trueCase is returned
+   * If models a ternary operator in a template.  If the condition is true the trueCase is returned
    * otherwise the falseCase is returned.
    * @param object object to test
    * @param p predicate to test
@@ -91,7 +91,7 @@ public class Undead {
    * @return trueCase if condition is true otherwise falseCase
    * @param <T> type of object to test
    */
-  public static <T> UndeadTemplate When(T object, Predicate<T> p, Function<T, UndeadTemplate> trueFunc, Function<T, UndeadTemplate> falseFunc) {
+  public static <T> UndeadTemplate If(T object, Predicate<T> p, Function<T, UndeadTemplate> trueFunc, Function<T, UndeadTemplate> falseFunc) {
     if (p.test(object)) {
       return trueFunc.apply(object);
     }
@@ -110,21 +110,6 @@ public class Undead {
     for (var c : cases) {
       if (c.predicate().test(object)) {
         return c.function().apply(object);
-      }
-    }
-    return EMPTY;
-  }
-
-  /**
-   * Switch is a switch statement for templates.  It takes a list of cases and returns the first
-   * case that matches.  If no case matches it returns an empty template.
-   * @param cases list of cases to match
-   * @return the first case that matches or an empty template
-   */
-  public static UndeadTemplate Switch(BCase... cases) {
-    for (var c : cases) {
-      if (c.cond()) {
-        return c.tmpl();
       }
     }
     return EMPTY;
@@ -241,29 +226,6 @@ public class Undead {
 
     public static Case defaultOf(UndeadTemplate tmpl) {
       return Case.of(t -> true, t -> tmpl);
-    }
-
-  }
-
-
-  /**
-   * BooleanCase represents a case in a switch statement where the condition is a boolean
-   * and the template is returned if the condition is true.
-   */
-  public interface BCase {
-
-    Boolean cond();
-    UndeadTemplate tmpl();
-    public static BCase of(Boolean cond, UndeadTemplate tmpl) {
-      return new BCase() {
-        public Boolean cond() {
-          return cond;
-        }
-
-        public UndeadTemplate tmpl() {
-          return tmpl;
-        }
-      };
     }
 
   }
