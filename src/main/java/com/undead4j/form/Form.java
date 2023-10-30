@@ -65,7 +65,7 @@ import java.util.*;
  *           <label for="email">Email</label>
  *           \{ TextInput(form, "email", "input input-bordered") }
  *           \{ ErrorMsg(form, "email") }
- *           <button \{ If(!form.valid(), HTML." disabled", EMPTY) } class="btn btn-primary" type="button" phx-click="submit">Submit</button>
+ *           <button \{ If(!form.valid(), HTML." disabled", EMPTY) } class="btn btn-primary" type="submit">Submit</button>
  *         </div>
  *       </form>
  *       """ ;
@@ -111,6 +111,14 @@ public class Form<T> {
   private final Set<String> touched;
   private T model;
   private Map<String, String> errors;
+
+  /**
+   * Create a new, empty form with the given model.
+   * @param clazz the class of the model to bind the form data to
+   */
+  public Form(Class clazz) {
+    this(clazz, new Values());
+  }
 
   /**
    * Create a new form with the given model and initial values.
