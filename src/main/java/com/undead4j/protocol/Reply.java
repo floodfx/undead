@@ -74,13 +74,4 @@ public class Reply {
     data.add(diff);
     return listAdaptor.toJson(data);
   }
-//
-//  func NewDiff(joinRef *string, topic string, diff []byte) *Diff {
-//    return &Diff{
-//      JoinRef: joinRef,
-//          Topic:   topic,
-//          Event:   "diff",
-//          Payload: diff,
-//    }
-//  }
 }
