@@ -92,9 +92,6 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
           <configuration>
-          <!--
-           ! Check for details in the README.adoc#Dynamic Agents
-          -->
           <argLine>
             --enable-preview
           </argLine>
@@ -131,6 +128,20 @@
           <source>21</source>
           <target>21</target>
           <compilerArgs>--enable-preview</compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <executable>java</executable>
+          <arguments>
+            <argument>--enable-preview</argument>
+            <argument>-classpath</argument>
+            <classpath/>
+            <argument>run.undead.javalin.example.Server</argument>
+          </arguments>
         </configuration>
       </plugin>
     </plugins>
