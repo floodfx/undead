@@ -7,7 +7,7 @@ import run.undead.template.MainLayout;
 
 /**
  * Context abstracts the underlying transport mechanism (i.e. HTTP or WebSocket) for a
- * {@link View} and provides common functionality and metadata to extend the functionality
+ * {@link View} and provides common functionality and metadata to extend the behavior
  * of the {@link View} instance.
  */
 public interface Context {

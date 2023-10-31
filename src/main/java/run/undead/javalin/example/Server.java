@@ -33,7 +33,7 @@ public class Server {
           ctx.result("Hello");
           ctx.contentType("text/html");
         })
-        .start(7070);
+        .start(1313);
   }
 }
 
