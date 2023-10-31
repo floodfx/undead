@@ -25,3 +25,6 @@ replay_pid*
 
 # target dir
 target/
+
+# javascript
+node_modules

@@ -36,7 +36,7 @@ public interface MainLayout {
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <meta name="csrf-token" content="\{ csrfToken }" />
           \{ this.liveTitle(pageTitle) }
-          <script defer type="text/javascript" src="/js/index.js"></script>
+          <script defer type="text/javascript" src="/js/undead.js"></script>
           <!-- DaisyUI + Tailwind CSS: we recommend replacing this with your own CSS/Components -->
           <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.2/dist/full.css" rel="stylesheet" type="text/css" />
           <script src="https://cdn.tailwindcss.com"></script>
