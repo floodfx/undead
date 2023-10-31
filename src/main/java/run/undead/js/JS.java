@@ -33,6 +33,27 @@ import java.util.List;
  *   """ ;
  * }</pre>
  *
+ *  List of all the JS commands:
+ *  <ul>
+ *    <li>{@link JS#addClass}</li>
+ *    <li>{@link JS#dispatch}</li>
+ *    <li>{@link JS#exec}</li>
+ *    <li>{@link JS#focus}</li>
+ *    <li>{@link JS#focusFirst}</li>
+ *    <li>{@link JS#hide}</li>
+ *    <li>{@link JS#navigate}</li>
+ *    <li>{@link JS#patch}</li>
+ *    <li>{@link JS#popFocus}</li>
+ *    <li>{@link JS#push}</li>
+ *    <li>{@link JS#pushFocus}</li>
+ *    <li>{@link JS#removeAttr}</li>
+ *    <li>{@link JS#removeClass}</li>
+ *    <li>{@link JS#setAttr}</li>
+ *    <li>{@link JS#show}</li>
+ *    <li>{@link JS#toggle}</li>
+ *    <li>{@link JS#transition}</li>
+ *  </ul>
+ *
  */
 public class JS {
 
