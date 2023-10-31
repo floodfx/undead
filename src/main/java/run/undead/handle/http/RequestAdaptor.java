@@ -14,35 +14,35 @@ public interface RequestAdaptor {
    * The session data from the HTTP request
    * @return a Map of session data
    */
-  public Map sessionData();
+  Map sessionData();
 
   /**
    * The URL of the HTTP request
    * @return the URL
    */
-  public String url();
+  String url();
 
   /**
    * The path of the HTTP request
    * @return the path
    */
-  public String path();
+  String path();
 
   /**
    * The path parameters of the HTTP request
    * @return a Map of path parameters
    */
-  public Map pathParams();
+  Map pathParams();
 
   /**
    * The query parameters of the HTTP request
    * @return a Map of query parameters
    */
-  public Map queryParams();
+  Map queryParams();
 
   /**
    * A callback to deliver redirect URLs to the server framework
    * @param destURL
    */
-  public void willRedirect(String destURL);
+  void willRedirect(String destURL);
 }

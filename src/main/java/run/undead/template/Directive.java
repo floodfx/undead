@@ -177,11 +177,11 @@ public class Directive {
     Predicate<T> predicate();
     Function<T, UndeadTemplate> function();
 
-    public default boolean test(T t) {
+    default boolean test(T t) {
       return predicate().test(t);
     }
 
-    public default UndeadTemplate apply(T t) {
+    default UndeadTemplate apply(T t) {
       return function().apply(t);
     }
 
@@ -192,7 +192,7 @@ public class Directive {
      * @return a new case made with the given predicate and function
      * @param <T> type of object passed to predicate and function
      */
-    public static <T> Case<T> of(Predicate<T> predicate, Function<T, UndeadTemplate> function) {
+    static <T> Case<T> of(Predicate<T> predicate, Function<T, UndeadTemplate> function) {
       return new Case<T>() {
         @Override
         public Predicate<T> predicate() {
@@ -206,7 +206,7 @@ public class Directive {
       };
     }
 
-    public static Case of(Boolean cond, UndeadTemplate tmpl) {
+    static Case of(Boolean cond, UndeadTemplate tmpl) {
       return Case.of(t -> cond, t -> tmpl);
     }
 
@@ -216,11 +216,11 @@ public class Directive {
      * @return a new case made with the given function and a predicate that always returns true
      * @param <T> type of object passed to predicate and function
      */
-    public static <T> Case<T> defaultOf(Function<T, UndeadTemplate> func) {
+    static <T> Case<T> defaultOf(Function<T, UndeadTemplate> func) {
       return Case.of(t -> true, func);
     }
 
-    public static Case defaultOf(UndeadTemplate tmpl) {
+    static Case defaultOf(UndeadTemplate tmpl) {
       return Case.of(t -> true, t -> tmpl);
     }
 

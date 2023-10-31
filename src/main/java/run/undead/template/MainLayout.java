@@ -22,7 +22,7 @@ public interface MainLayout {
    * @param content
    * @return
    */
-  default public UndeadTemplate render(
+  default UndeadTemplate render(
       PageTitle pageTitle,
       String csrfToken,
       UndeadTemplate content

@@ -99,7 +99,7 @@ public interface View {
    * @param sessionData a Map of session data from the HTTP request
    * @param params a Map of parameters (both path and query) from the HTTP request
    */
-  default public void mount(Context context, Map sessionData, Map params) {
+  default void mount(Context context, Map sessionData, Map params) {
     // by default mount does nothing which is ok
   }
 
@@ -111,7 +111,7 @@ public interface View {
    * @param uri the {@link URI} of the View
    * @param params a Map of parameters (both path and query)
    */
-  default public void handleParams(Context context, URI uri, Map params) {
+  default void handleParams(Context context, URI uri, Map params) {
     // by default handleParams does nothing which is ok
   }
 
@@ -127,7 +127,7 @@ public interface View {
    * @param context the {@link Context} for the View
    * @param event the {@link UndeadEvent} with the event type and data
    */
-  default public void handleEvent(Context context, UndeadEvent event) {
+  default void handleEvent(Context context, UndeadEvent event) {
     // if we get an event, tell the developer they need to implement this
     throw new RuntimeException("Implement handleEvent in your view");
   }
@@ -143,7 +143,7 @@ public interface View {
    * @param context the {@link Context} for the View
    * @param info the {@link UndeadInfo} with the info type and data
    */
-  default public void handleInfo(Context context, UndeadInfo info) {
+  default void handleInfo(Context context, UndeadInfo info) {
     // if we get an info, tell the developer they need to implement this
     throw new RuntimeException("Implement handleInfo in your view");
   }
@@ -158,7 +158,7 @@ public interface View {
    * @param meta the {@link Meta} object for the View
    * @return an {@link UndeadTemplate} based on the state of the View
    */
-  public UndeadTemplate render(Meta meta);
+  UndeadTemplate render(Meta meta);
 
   /**
    * shutdown is called when the View is shutting down and is a good place to clean up any resources,

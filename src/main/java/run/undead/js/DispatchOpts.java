@@ -62,7 +62,7 @@ public class DispatchOpts implements Cmd {
     this.to = to;
     this.event = event;
     this.detail = detail;
-    this.bubbles = bubbles == null ? true : bubbles;
+    this.bubbles = bubbles == null || bubbles;
   }
 
   @Override
