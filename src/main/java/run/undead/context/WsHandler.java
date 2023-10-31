@@ -1,5 +1,6 @@
 package run.undead.context;
 
+import com.google.common.base.Strings;
 import run.undead.config.Config;
 import run.undead.event.SimpleUndeadEvent;
 import run.undead.protocol.MsgParser;
@@ -136,7 +137,7 @@ public class WsHandler {
               throw new RuntimeException("unknown event type:" + payloadEventType);
           }
           // check if we have a redirect
-          if (context != null && !context.redirect.isEmpty()) {
+          if (context != null && !Strings.isNullOrEmpty(context.redirect)) {
             wsSender.send(Reply.redirect(msg, context.redirect));
             break;
           }
