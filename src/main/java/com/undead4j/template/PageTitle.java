@@ -2,12 +2,12 @@ package com.undead4j.template;
 
 import org.jetbrains.annotations.NotNull;
 
-public class PageTitleConfig {
+public class PageTitle {
   private String title;
   private String prefix;
   private String suffix;
 
-  public PageTitleConfig() {
+  public PageTitle() {
     this.title = "";
     this.prefix = "";
     this.suffix = "";
@@ -25,17 +25,17 @@ public class PageTitleConfig {
     return this.suffix;
   }
 
-  public PageTitleConfig withTitle(@NotNull String title) {
+  public PageTitle withTitle(@NotNull String title) {
     this.title = title;
     return this;
   }
 
-  public PageTitleConfig withPrefix(@NotNull String prefix) {
+  public PageTitle withPrefix(@NotNull String prefix) {
     this.prefix = prefix;
     return this;
   }
 
-  public PageTitleConfig withSuffix(@NotNull String suffix) {
+  public PageTitle withSuffix(@NotNull String suffix) {
     this.suffix = suffix;
     return this;
   }

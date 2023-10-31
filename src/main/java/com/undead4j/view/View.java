@@ -2,7 +2,7 @@ package com.undead4j.view;
 
 import com.undead4j.event.UndeadEvent;
 import com.undead4j.event.UndeadInfo;
-import com.undead4j.socket.Socket;
+import com.undead4j.context.Context;
 import com.undead4j.template.UndeadTemplate;
 
 import java.net.URI;
@@ -42,16 +42,16 @@ import java.util.Map;
  *   <pre>{@link View#mount} => {@link View#handleParams} => {@link View#render}</pre>
  *</p>
  * <p>
- *   First, {@link View#mount} is called and is passed a {@link Socket}, sessionData, and parameters
+ *   First, {@link View#mount} is called and is passed a {@link Context}, sessionData, and parameters
  *   (both path and query) from the HTTP request.  This is where you should initialize any state for the View,
  *   perhaps, based on sessionData, params or both. It is reasonable for authz and authn logic to take
- *   place in mount as well.  See {@link Socket} for more information on the Socket.
+ *   place in mount as well.  See {@link Context} for more information on the Socket.
  *</p>
  * <p>
- *   Next, {@link View#handleParams} is called and is passed the {@link Socket}, the {@link URI} of the
+ *   Next, {@link View#handleParams} is called and is passed the {@link Context}, the {@link URI} of the
  *   View (based on the path), and the parameters.  This is called after {@link View#mount} and whenever there is a live patch
  *   event.  You can use this callback to update the state of the View based on the parameters and is useful
- *   if there are live patch events that update the URI of the View. See {@link Socket} for more information
+ *   if there are live patch events that update the URI of the View. See {@link Context} for more information
  *<p>
  *   Finally, {@link View#render} is called and is passed a {@link Meta} object.  Render should use the state
  *   of the View return an HTML {@link UndeadTemplate} for the View.  See {@link Meta} for more information.
@@ -76,7 +76,7 @@ import java.util.Map;
  * <p>
  *   Server events are any events that are not triggered by the browser but rather messages that come from a pub/sub
  *   topic or the same View instance.  For example, a View could have a timer that fires periodically sending an
- *   internal message to the client via the {@link Socket#sendInfo} method. Regardless of the source of the event,
+ *   internal message to the client via the {@link Context#sendInfo} method. Regardless of the source of the event,
  *   the View will receive the event via the {@link View#handleInfo} callback.
  * </p>
  * <p>
@@ -94,12 +94,12 @@ public interface View {
   /**
    * mount is called once for both the HTTP request/response and the WebSocket connection phase and is
    * typically used to initialize the state of the View based on the sessionData and params.
-   * @see Socket
-   * @param socket the {@link Socket} for the View
+   * @see Context
+   * @param context the {@link Context} for the View
    * @param sessionData a Map of session data from the HTTP request
    * @param params a Map of parameters (both path and query) from the HTTP request
    */
-  default public void mount(Socket socket, Map sessionData, Map params) {
+  default public void mount(Context context, Map sessionData, Map params) {
     // by default mount does nothing which is ok
   }
 
@@ -107,11 +107,11 @@ public interface View {
    * handleParams is called once after mount and whenever there is a URI change.  You can use this callback
    * to update the state of the View based on the parameters and is useful if there are events that update
    * the URI of the View (e.g. add / update / remove query parameters).
-   * @param socket the {@link Socket} for the View
+   * @param context the {@link Context} for the View
    * @param uri the {@link URI} of the View
    * @param params a Map of parameters (both path and query)
    */
-  default public void handleParams(Socket socket, URI uri, Map params) {
+  default public void handleParams(Context context, URI uri, Map params) {
     // by default handleParams does nothing which is ok
   }
 
@@ -124,26 +124,26 @@ public interface View {
    * implementation throws a {@link RuntimeException} so you must implement this method in your View if it will
    * receive {@link UndeadEvent}.
    * @see UndeadTemplate
-   * @param socket the {@link Socket} for the View
+   * @param context the {@link Context} for the View
    * @param event the {@link UndeadEvent} with the event type and data
    */
-  default public void handleEvent(Socket socket, UndeadEvent event) {
+  default public void handleEvent(Context context, UndeadEvent event) {
     // if we get an event, tell the developer they need to implement this
     throw new RuntimeException("Implement handleEvent in your view");
   }
 
   /**
    * handleInfo is called when an event (a.k.a info) is received from the server.  For example, a View could
-   * have a timer that fires periodically sending an internal message to the client via the {@link Socket#sendInfo}
+   * have a timer that fires periodically sending an internal message to the client via the {@link Context#sendInfo}
    * method.  When handleInfo is called, the View may update its state which will cause {@link View#render} to
    * be called again and for the diffs to be sent back to the client and applied to the DOM.  <strong>Note:</strong>
    * the default implementation throws a {@link RuntimeException} so you must implement this method in your View if
    * it will receive {@link UndeadInfo}.
-   * @see Socket
-   * @param socket the {@link Socket} for the View
+   * @see Context
+   * @param context the {@link Context} for the View
    * @param info the {@link UndeadInfo} with the info type and data
    */
-  default public void handleInfo(Socket socket, UndeadInfo info) {
+  default public void handleInfo(Context context, UndeadInfo info) {
     // if we get an info, tell the developer they need to implement this
     throw new RuntimeException("Implement handleInfo in your view");
   }

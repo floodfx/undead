@@ -1,6 +1,6 @@
 package com.undead4j.javalin;
 
-import com.undead4j.socket.WsSender;
+import com.undead4j.context.WsSender;
 import io.javalin.websocket.WsContext;
 
 /**

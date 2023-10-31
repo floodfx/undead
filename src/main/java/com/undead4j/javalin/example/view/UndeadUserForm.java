@@ -3,7 +3,7 @@ package com.undead4j.javalin.example.view;
 import com.undead4j.event.UndeadEvent;
 import com.undead4j.form.Form;
 import com.undead4j.javalin.example.view.model.UserModel;
-import com.undead4j.socket.Socket;
+import com.undead4j.context.Context;
 import com.undead4j.template.UndeadTemplate;
 import com.undead4j.view.Meta;
 import com.undead4j.view.View;
@@ -27,7 +27,7 @@ public class UndeadUserForm implements View {
   }
 
   @Override
-  public void handleEvent(Socket socket, UndeadEvent event) {
+  public void handleEvent(Context context, UndeadEvent event) {
     if (event.type().equals("validate")) {
       // for "validate" (i.e. form changes) we update the form with the data
       // from the event which will trigger validations and update the form state

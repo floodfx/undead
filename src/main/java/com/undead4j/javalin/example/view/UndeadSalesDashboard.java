@@ -3,7 +3,7 @@ package com.undead4j.javalin.example.view;
 import com.undead4j.event.SimpleUndeadInfo;
 import com.undead4j.event.UndeadEvent;
 import com.undead4j.event.UndeadInfo;
-import com.undead4j.socket.Socket;
+import com.undead4j.context.Context;
 import com.undead4j.template.Directive;
 import com.undead4j.template.UndeadTemplate;
 import com.undead4j.view.Meta;
@@ -30,27 +30,27 @@ public class UndeadSalesDashboard implements View {
   }
 
   @Override
-  public void mount(Socket socket, Map sessionData, Map params) {
+  public void mount(Context context, Map sessionData, Map params) {
     // start timer task if we're connected (i.e. not http request)
-    if (socket.connected()) {
+    if (context.connected()) {
       this.timer = new Timer();
       this.timer.schedule(new TimerTask() {
         public void run() {
-          socket.sendInfo(new SimpleUndeadInfo("refresh", null));
+          context.sendInfo(new SimpleUndeadInfo("refresh", null));
         }
       }, 0, 1000);
     }
   }
 
   @Override
-  public void handleInfo(Socket socket, UndeadInfo info) {
+  public void handleInfo(Context context, UndeadInfo info) {
     if (info.type().equals("refresh")) {
       this.doRefresh();
     }
   }
 
   @Override
-  public void handleEvent(Socket socket, UndeadEvent event) {
+  public void handleEvent(Context context, UndeadEvent event) {
     if (event.type().equals("refresh")) {
       this.doRefresh();
     }
