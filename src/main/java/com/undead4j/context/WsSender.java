@@ -1,4 +1,4 @@
-package com.undead4j.socket;
+package com.undead4j.context;
 
 /**
  * WsSender is an interface for sending String data to the websocket client.
