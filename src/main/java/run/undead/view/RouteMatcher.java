@@ -15,7 +15,7 @@ public interface RouteMatcher {
    * @param pathRegex the pathRegex to match against
    * @param view the {@link View} to return if the path matches
    */
-  public void addRoute(String pathRegex, View view);
+  void addRoute(String pathRegex, View view);
 
   /**
    * matches returns a view if the path matches a route, otherwise null.  Implementations should
@@ -24,7 +24,7 @@ public interface RouteMatcher {
    * @param path the path to match against the pathRegex previously added with addRoute
    * @return the {@link View} if the path matches a route, otherwise null
    */
-  public View matches(String path);
+  View matches(String path);
 
   /**
    * pathParams returns a map of path parameters extracted from the path using the previously
@@ -33,6 +33,6 @@ public interface RouteMatcher {
    * @param path the path to extract path parameters from
    * @return a map of path parameters
    */
-  public Map pathParams(String path);
+  Map pathParams(String path);
 
 }

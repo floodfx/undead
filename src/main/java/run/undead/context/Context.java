@@ -21,25 +21,25 @@ public interface Context {
   /**
    * id is the unique id of the Undead {@link View} instance
    */
-  public String id();
+  String id();
 
   /**
    * connected is true if connected to a websocket, false for http request
    */
-  default public Boolean connected() {
+  default Boolean connected() {
     return false;
   }
 
   /**
    * url is the URL for this {@link View}
    */
-  public String url();
+  String url();
 
   /**
    * pageTitle updates the `<title>` tag of the {@link View} page.  Requires using the
    * {@link MainLayout#liveTitle} helper in rendering the page.
    */
-  default public void pageTitle(String newTitle) {
+  default void pageTitle(String newTitle) {
     // noop by default
   }
 
@@ -48,7 +48,7 @@ public interface Context {
    * to have a {@code window.addEventListener} defined for that event or a client
    * {@code Hook} to be defined and to be listening for the event via {@code this.handleEvent} callback.
    */
-  default public void pushEvent(UndeadEvent event){
+  default void pushEvent(UndeadEvent event){
     // noop by default
   }
 
@@ -57,9 +57,9 @@ public interface Context {
    * {@link View} must implement the {@link View#handleInfo(Context, UndeadInfo)} callback
    * to handle the info message.
    */
-  default public void sendInfo(UndeadInfo info) {
+  default void sendInfo(UndeadInfo info) {
     // noop by default
   }
 
-  public void redirect(String url);
+  void redirect(String url);
 }
