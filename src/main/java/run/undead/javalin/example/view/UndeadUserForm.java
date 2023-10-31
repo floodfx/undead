@@ -11,6 +11,7 @@ import run.undead.view.View;
 import static run.undead.javalin.example.view.tags.Input.ErrorMsg;
 import static run.undead.javalin.example.view.tags.Input.TextInput;
 import static run.undead.template.Directive.*;
+import static run.undead.template.Undead.*;
 
 /**
  * UndeadUserForm is a simple form that uses Undead's {@link Form} to validate and save a

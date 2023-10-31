@@ -8,15 +8,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static run.undead.template.Undead.EMPTY;
+
 public class Directive {
 
-  /**
-   * HTML is a string template processor that escapes all HTML entities in the template.
-   */
-  public static final StringTemplate.Processor<UndeadTemplate, RuntimeException> HTML =
-      template ->  new UndeadTemplate(template);
 
-  public static final UndeadTemplate EMPTY = HTML."";
 
   /**
    * NoEscape ensures no additional HTML escaping occurs for this template which is

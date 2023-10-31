@@ -11,6 +11,7 @@ import run.undead.view.View;
 
 import java.util.Map;
 
+import static run.undead.template.Undead.*;
 import static run.undead.template.Directive.*;
 
 public class UndeadCounter implements View {

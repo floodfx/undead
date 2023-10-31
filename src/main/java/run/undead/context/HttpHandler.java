@@ -1,10 +1,7 @@
 package run.undead.context;
 
 import run.undead.handle.http.RequestAdaptor;
-import run.undead.template.Directive;
-import run.undead.template.MainLayout;
-import run.undead.template.PageTitle;
-import run.undead.template.WrapperTemplate;
+import run.undead.template.*;
 import run.undead.view.Meta;
 import run.undead.view.View;
 import okhttp3.HttpUrl;
@@ -93,7 +90,7 @@ public class HttpHandler {
     }
 
     // render the root container of the View
-    var rootContent = Directive.HTML. """
+    var rootContent = Undead.HTML. """
       <div
       data-phx-main="true"
       data-phx-session="\{ serializedSession }"
