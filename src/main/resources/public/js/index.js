@@ -5376,7 +5376,7 @@ var Hooks2 = {
 var url = "/live";
 var _a;
 var csrfToken = (_a = document.querySelector("meta[name='csrf-token']")) == null ? void 0 : _a.getAttribute("content");
-var liveSocket = new LiveSocket(url, Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks2 });
+var liveSocket = new LiveSocket(url, Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks2, bindingPrefix: "ud-" });
 window.addEventListener("phx:refresh", (e) => {
   console.log("phx:refresh", e);
 });
