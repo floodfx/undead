@@ -1,10 +1,10 @@
 package run.undead.javalin.example.view;
 
+import run.undead.context.Context;
 import run.undead.event.SimpleUndeadInfo;
 import run.undead.event.UndeadEvent;
 import run.undead.event.UndeadInfo;
-import run.undead.context.Context;
-import run.undead.template.Directive;
+import run.undead.template.Undead;
 import run.undead.template.UndeadTemplate;
 import run.undead.view.Meta;
 import run.undead.view.View;
@@ -64,7 +64,7 @@ public class UndeadSalesDashboard implements View {
 
   @Override
   public UndeadTemplate render(Meta meta) {
-    return Directive.HTML. """
+    return Undead.HTML. """
       <div class="flex flex-col mx-4 space-y-4">
         <div class="stats stats-vertical md:stats-horizontal shadow">
 

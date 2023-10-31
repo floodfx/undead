@@ -2,7 +2,7 @@ package run.undead.javalin.example.view.tags;
 
 import com.google.common.base.Strings;
 import run.undead.form.Form;
-import run.undead.template.Directive;
+import run.undead.template.Undead;
 import run.undead.template.UndeadTemplate;
 
 /**
@@ -23,7 +23,7 @@ public class Input {
     for (var clazz : classes) {
       classesString += clazz + " ";
     }
-    return Directive.HTML. """
+    return Undead.HTML. """
         <input type="text" id="\{ name }" name="\{ name }" value="\{ value }" ud-debounce="500" class="\{ classesString }" />
         """ ;
   }
@@ -37,9 +37,9 @@ public class Input {
   public static UndeadTemplate ErrorMsg(Form form, String name) {
     var error = form.errorFor(name);
     if (Strings.isNullOrEmpty(error)) {
-      return Directive.EMPTY;
+      return Undead.EMPTY;
     }
-    return Directive.HTML. """
+    return Undead.HTML. """
       <div class="text-sm text-error">\{ error }</div>
     """ ;
   }

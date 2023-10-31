@@ -2,7 +2,7 @@ package run.undead.template;
 
 import run.undead.view.View;
 
-import static run.undead.template.Directive.HTML;
+import static run.undead.template.Undead.HTML;
 import static run.undead.template.Directive.NoEscape;
 
 /**
