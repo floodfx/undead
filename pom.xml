@@ -6,15 +6,35 @@
 
   <groupId>run.undead</groupId>
   <artifactId>undead-core</artifactId>
-  <version>0.0.1</version>
-  <name>undead</name>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>undead-core</name>
+  <description>
+    Undead is a library for building scary fast, highly dynamic web applications on the JVM.
+  </description>
   <url>https://github.com/floodfx/undead</url>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>21</maven.compiler.release>
   </properties>
-
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Donnie Flood</name>
+      <email>donnie@floodfx.com</email>
+      <organization>floodfx</organization>
+      <organizationUrl>https://github.com/floodfx</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git://github.com/floodfx/undead.git</connection>
+    <developerConnection>scm:git:ssh://github.com:floodfx/undead.git</developerConnection>
+    <url>http://github.com/floodfx/undead/tree/main</url>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -64,6 +84,16 @@
     </dependency>
   </dependencies>
 
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
@@ -160,6 +190,49 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <gpgArguments>
+            <arg>--pinentry-mode</arg>
+            <arg>loopback</arg>
+          </gpgArguments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>0.1.2</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
+          <tokenEnabled>true</tokenEnabled>
+        </configuration>
       </plugin>
     </plugins>
   </build>
