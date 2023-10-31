@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
  * define the HTML that will be rendered to the client from {@link View#render}.
  * UndeadTemplate automatically escapes HTML entities in the "dynamic" parts of the template to mitigate XSS attacks.
  *
- * <p>
+ *  <p>
  *   To create an UndeadTemplate you use the {@link Directive#HTML} static {@link StringTemplate.Processor} method.
  *   For example:
  *   <pre>{@code
@@ -27,15 +27,15 @@ import java.util.stream.IntStream;
  *     // or multi-line template
  *     UndeadTemplate tmpl = Undead.HTML."""
  *        Hello \{ name }
- *     """;*
+ *     """;
  *   }</pre>
  *   {@link StringTemplate}s use the <code>\{}</code> syntax to denote embedded expressions. These embedded expressions
  *   are the dynamic parts of the template and are evaluated automatically by Undead when the template needs to be
  *   rendered.
- * </p>
- * <p>
+ *  </p>
+ *  <p>
  *   You can of course embed HTML within the template as well.  For example:
- *   <pre>
+ *   <pre>{@code
  *     UndeadTemplate tmpl = Undead.HTML."<div class="text-2xl">Hello \{ name }</div>";
  *   }</pre>
  *  </p>
