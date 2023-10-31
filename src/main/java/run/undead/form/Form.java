@@ -24,7 +24,7 @@ import java.util.*;
  *   }</pre>
  *
  *   Then define a view that uses this model and form:
- *   <pre>{@code
+ *   {@code
  *   public class UndeadUserForm implements View {
  *
  *   private Form<UserModel> form;
@@ -71,7 +71,8 @@ import java.util.*;
  *       </form>
  *       """ ;
  *   }
- *   }</pre>
+ *   }
+ *  </p>
  *   <p>
  *     The view above uses the following helper tags to render the form inputs and error messages:
  *     <pre>{@code
@@ -97,9 +98,10 @@ import java.util.*;
  *          }
  *        }
  *     }</pre>
+ *  </p>
  *
+ * @param <T> the type of the model to which the form data is bound.
  *
- * @param <T> the type of the model to bind the form data to
  */
 public class Form<T> {
 
