@@ -80,6 +80,7 @@ public class WsHandler {
               context.csrfToken = (String) params.get("_csrf_token");
               context.view = view;
               context.sender = wsSender;
+              context.pubsub = undeadConfig.pubsub;
               // TODO get session data and params
 
               // lv: join messages get a mount => handleParams => render

@@ -1,5 +1,7 @@
 package run.undead.config;
 
+import run.undead.pubsub.MemPubSub;
+import run.undead.pubsub.PubSub;
 import run.undead.template.MainLayout;
 import run.undead.template.PageTitle;
 import run.undead.template.UndeadTemplate;
@@ -24,6 +26,8 @@ public class Config {
 
   public Consumer<String> debug;
 
+  public PubSub pubsub;
+
   public Config() {
     // use the default main layout
     this.mainLayout = new MainLayout() {
@@ -32,6 +36,8 @@ public class Config {
         return MainLayout.super.render(pageTitle, csrfToken, content);
       }
     };
+    // default PubSub to MemPubSub
+    this.pubsub = MemPubSub.INSTANCE;
   }
 
 }
