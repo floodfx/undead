@@ -46,7 +46,9 @@ public class JavalinWsAdaptor {
       clearHandler(ctx.getSessionId());
     });
     wsConfig.onMessage(ctx -> {
-      undeadConf.debug.accept("WS message: " + ctx.message());
+      if(undeadConf.debug != null) {
+        undeadConf.debug.accept("Raw ws message: " + ctx.message());
+      }
       var handler = getOrCreateHandler(ctx.getSessionId());
       handler.setWsSender(new JavalinWsSender(ctx));
       handler.handleMessage(ctx.message());

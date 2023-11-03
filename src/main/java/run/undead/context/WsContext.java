@@ -8,8 +8,8 @@ import run.undead.pubsub.PubSub;
 import run.undead.view.Meta;
 import run.undead.view.View;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * WsContext is an implementation of the {@link Context} for the WebSocket
@@ -31,7 +31,7 @@ public class WsContext implements Context {
     this.id = id;
     this.url = url;
     this.view = view;
-    this.subs = new HashMap<>();
+    this.subs = new ConcurrentHashMap<>();
   }
 
   @Override
