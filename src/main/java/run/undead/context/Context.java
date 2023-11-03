@@ -15,7 +15,6 @@ public interface Context {
   // support tempAssign (perhaps a @TempAssign annotation on a property?)
   // support pushPatch, pushRedirect,
   // how do we inject services into this object?
-  // subscribe side of pub/sub
   // uploads: allowUpload, cancelUpload, consumeUploadedEntries, uploadedEntries
 
   /**
@@ -62,4 +61,31 @@ public interface Context {
   }
 
   void redirect(String url);
+
+  /**
+   * subscribe subscribes the {@link View} to the given topic.  The {@link View} must
+   * implement the {@link View#handleInfo(Context, UndeadInfo)} callback to handle the
+   * info messages for the topic.
+   * @param topic the topic to subscribe to
+   */
+  default void subscribe(String topic) {
+    // noop by default
+  }
+
+  /**
+   * unsubscribe unsubscribes the {@link View} from the given topic.
+   * @param topic the topic to unsubscribe from
+   */
+  default void unsubscribe(String topic) {
+    // noop by default
+  }
+
+  /**
+   * publish publishes the given data to the given topic.
+   * @param topic the topic to publish to
+   * @param data the data to publish
+   */
+  default void publish(String topic, String data) {
+    // noop by default
+  }
 }

@@ -1,9 +1,9 @@
 package run.undead.javalin.example.view;
 
 import run.undead.context.Context;
-import run.undead.event.SimpleUndeadInfo;
 import run.undead.event.UndeadEvent;
 import run.undead.event.UndeadInfo;
+import run.undead.pubsub.MemPubSub;
 import run.undead.template.Undead;
 import run.undead.template.UndeadTemplate;
 import run.undead.view.Meta;
@@ -33,10 +33,13 @@ public class UndeadSalesDashboard implements View {
   public void mount(Context context, Map sessionData, Map params) {
     // start timer task if we're connected (i.e. not http request)
     if (context.connected()) {
+      // subscribe to "refresh" pubsub topic
+      context.subscribe("refresh");
       this.timer = new Timer();
       this.timer.schedule(new TimerTask() {
         public void run() {
-          context.sendInfo(new SimpleUndeadInfo("refresh", null));
+          // somewhat contrived example of using pubsub to send a message to ourselves
+          MemPubSub.INSTANCE.publish("refresh", null);
         }
       }, 0, 1000);
     }
@@ -118,5 +121,6 @@ public class UndeadSalesDashboard implements View {
   @Override
   public void shutdown() {
     this.timer.cancel();
+    this.timer = null;
   }
 }
