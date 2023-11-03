@@ -19,7 +19,6 @@ public class Server {
   public static void main(String[] args) {
 
     var undeadConf = new Config();
-    undeadConf.debug = msg -> System.out.println("Undead: " + msg);
     var app = new UndeadJavalin(Javalin.create(config ->
         // register static file locations for the Undead client javascript
         config.staticFiles.add(staticFileConfig -> {
