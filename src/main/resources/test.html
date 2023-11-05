@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Hello {{name}}!
+
+{% for article in articles %}
+<h3>{{ article.title }}</h3>
+<p>{{ article.content }}</p>
+{% else %}
+<p> There are no articles. </p>
+{% endfor %}
+
+
+{% if category == "news" %}
+{{ news }}
+{% elseif category == "sports" %}
+{{ sports }}
+{% else %}
+<p>Please select a category</p>
+{% endif %}
+
+{% include "sub.html" %}
+</body>
+</html>

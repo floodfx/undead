@@ -29,6 +29,7 @@ public class Server {
     ), undeadConf)
         // use the UndeadJavalin instance to register Undead Views to routes
         .undead("/count", new UndeadCounter())
+        .undead("/count/pebble", new UndeadCounterPebble())
         .undead("/count/{start}", new UndeadCounter())
         .undead("/dashboard", new UndeadSalesDashboard())
         .undead("/user/new", new UndeadUserForm())
