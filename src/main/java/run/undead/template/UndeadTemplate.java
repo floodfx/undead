@@ -1,13 +1,11 @@
 package run.undead.template;
 
-import run.undead.js.JS;
+import com.google.common.collect.Maps;
 import run.undead.form.Form;
+import run.undead.js.JS;
 import run.undead.view.View;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -19,7 +17,7 @@ import java.util.stream.IntStream;
  * UndeadTemplate automatically escapes HTML entities in the "dynamic" parts of the template to mitigate XSS attacks.
  *
  *  <p>
- *   To create an UndeadTemplate you use the {@link Directive#HTML} static {@link StringTemplate.Processor} method.
+ *   To create an UndeadTemplate you use the {@link Undead#HTML} static {@link StringTemplate.Processor} method.
  *   For example:
  *   <pre>{@code
  *     // single line template
@@ -206,7 +204,7 @@ import java.util.stream.IntStream;
  */
 public class UndeadTemplate {
   private static final Map<String, String> ENTITIES =
-      Map.of(
+      java.util.Map.of(
           "&", "&amp;",
           "<", "&lt;",
           ">", "&gt;",
@@ -348,7 +346,6 @@ public class UndeadTemplate {
         IntStream.range(0, this.raw.values().size())
             .mapToObj(
                 i -> {
-                  // TODO handle all case where type of value(i)
                   var item = this.raw.values().get(i);
                   Object val;
                   switch (item) {
@@ -369,8 +366,44 @@ public class UndeadTemplate {
                       // TODO peek if in attribute with single or double quotes and if single then don't escape
                       val = escapeHTML(js);
                     }
-                    case ArrayList arr -> {
-                      throw new RuntimeException("Implement array list" + arr);
+                    // TODO handle live components
+                    case List list -> {
+                      if (list.isEmpty()) {
+                        val = "";
+                        break;
+                      }
+                      var d = new ArrayList<>();
+                      List<String> s = null;
+                      for (var li : list) {
+                        switch(li) {
+                          case UndeadTemplate tmpl -> {
+                            // if there is a single fragment in child template then we can
+                            // just use that directly instead of full parts tree
+                            if (tmpl.raw.fragments().size() == 1) {
+                              d.add(tmpl.raw.fragments().get(0));
+                            } else {
+                              // recurse into child template
+                              var childParts = tmpl.toParts();
+                              // remove statics since will be same for all and in "s" key for this collection
+                              childParts.remove("s");
+                              d.add(childParts);
+                            }
+                            // only need to set s once
+                            if (s == null) {
+                              s = tmpl.raw.fragments();
+                            }
+                          }
+                          // TODO handle live components
+                          default -> {
+                            throw new RuntimeException("Unexpected Array type in LiveTemplate:" + li.getClass() + " " + li);
+                          }
+                        }
+                      }
+                      // in case of array, we add a key of all the dynamics and use the same statics for all
+                      val = Map.of(
+                          "d", d,
+                          "s", s
+                      );
                     }
                     case String s -> {
                       val = escapeHTML(s);
@@ -379,7 +412,7 @@ public class UndeadTemplate {
                       val = escapeHTML(String.valueOf(n));
                     }
                     default -> {
-                      throw new RuntimeException("Expected type in LiveTemplate:" + item);
+                      throw new RuntimeException("Unexpected type in LiveTemplate:" + item.getClass() + " "+item);
                     }
                   }
                   return Map.entry(String.valueOf(i), val);

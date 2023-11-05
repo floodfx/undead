@@ -9,8 +9,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static run.undead.template.Directive.Switch;
+import static run.undead.template.Directive.*;
 import static run.undead.template.Undead.HTML;
+import static run.undead.template.UndeadTemplate.concat;
 
 public class UndeadTemplateTest {
 
@@ -28,13 +29,13 @@ public class UndeadTemplateTest {
 
   @Test
   public void testConcat() {
-    UndeadTemplate template = UndeadTemplate.concat(HTML."test", HTML."test");
+    UndeadTemplate template = concat(HTML."test", HTML."test");
     assertEquals("testtest", template.toString());
 
     // use values
     var foo = "foo";
     var bar = "bar";
-    template = UndeadTemplate.concat(HTML."<foo>\{foo}</foo>", HTML."test", HTML."<bar>\{bar}</bar>");
+    template = concat(HTML."<foo>\{foo}</foo>", HTML."test", HTML."<bar>\{bar}</bar>");
     assertEquals("<foo>foo</foo>test<bar>bar</bar>", template.toString());
   }
 
@@ -42,7 +43,7 @@ public class UndeadTemplateTest {
   public void testMap() {
     var items = List.of("foo", "bar", 1, false);
     var template = HTML."""
-      \{ Directive.Map(items, item -> HTML."<div>\{item}</div>")}
+      \{ Map(items, item -> HTML."<div>\{item}</div>")}
     """.trim();
     assertEquals("<div>foo</div><div>bar</div><div>1</div><div>false</div>", template.toString());
   }
@@ -51,8 +52,8 @@ public class UndeadTemplateTest {
   public void testJoin() {
     var items = List.of("foo", "bar", 1, false);
     var template = HTML."""
-      \{ Directive.Join(
-          Directive.Map(items, item -> HTML."<div>\{item}</div>"),
+      \{ Join(
+          Map(items, item -> HTML."<div>\{item}</div>"),
         HTML."|"
       )}
     """.trim();
@@ -85,16 +86,16 @@ public class UndeadTemplateTest {
   @Test
   public void testRange() {
     var template = HTML."""
-      \{ Directive.Map(
-          Directive.Range(10),
+      \{ Map(
+          Range(10),
           i -> HTML."<div>\{i}</div>"
       )}
     """.trim();
     assertEquals("<div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div>", template.toString());
 
     template = HTML."""
-      \{ Directive.Map(
-          Directive.Range(2, 10, 2),
+      \{ Map(
+          Range(2, 10, 2),
           i -> HTML."<div>\{i}</div>"
       )}
     """.trim();
@@ -102,8 +103,8 @@ public class UndeadTemplateTest {
 
     // negative step
     template = HTML."""
-      \{ Directive.Map(
-          Directive.Range(10, 2, -2),
+      \{ Map(
+          Range(10, 2, -2),
           i -> HTML."<div>\{i}</div>"
       )}
     """.trim();
@@ -157,6 +158,34 @@ public class UndeadTemplateTest {
     var t3 = tmplFn.apply(vars);
     d = UndeadTemplate.diff(t2.toParts(), t3.toParts());
     assertEquals(d, Map.of("1", Map.of("0","2", "s", List.of("  more:", ""))));
+  }
+
+  @Test
+  void testEmptyArray() {
+    var list = List.of();
+    var template = HTML."""
+      \{ Map(null,
+          i -> {
+        return HTML."<div>\{i}</div>";
+      }
+      )}
+    """.trim();
+    assertEquals("", template.toString());
+    assertEquals(Map.of("0", "", "s", List.of("", "")), template.toParts());
+  }
+
+  @Test
+  void testArray() {
+    var template = HTML."""
+      \{ Map(List.of(100,101),
+          i -> {
+        return HTML."<div>\{i}</div>";
+      }
+      )}
+    """.trim();
+    assertEquals("<div>100</div><div>101</div>", template.toString());
+    //0={d=[{0=100}, {0=101}], s=[<div>, </div>]}, s=[, ]
+    assertEquals(Map.of("0", Map.of("d", List.of(Map.of("0", "100"), Map.of("0", "101")), "s", List.of("<div>", "</div>")), "s", List.of("", "")), template.toParts());
   }
 
 }
