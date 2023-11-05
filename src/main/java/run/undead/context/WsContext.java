@@ -5,9 +5,11 @@ import run.undead.event.UndeadEvent;
 import run.undead.event.UndeadInfo;
 import run.undead.protocol.Reply;
 import run.undead.pubsub.PubSub;
+import run.undead.template.UndeadTemplate;
 import run.undead.view.Meta;
 import run.undead.view.View;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,6 +28,9 @@ public class WsContext implements Context {
   protected WsSender sender;
   protected Map<String, String> subs; // topic to subId
   protected PubSub pubsub;
+  protected UndeadTemplate lastTmpl;
+  protected List<UndeadEvent> events;
+  protected String title;
 
   public WsContext(String id, String url, View view) {
     this.id = id;
@@ -51,19 +56,19 @@ public class WsContext implements Context {
 
   @Override
   public void pageTitle(String newTitle) {
-    // TODO add "t"
+    this.title = newTitle;
   }
 
   @Override
   public void pushEvent(UndeadEvent event) {
-
+    this.events.add(event);
   }
 
   @Override
   public void sendInfo(UndeadInfo info) {
     this.view.handleInfo(this, info);
-    var tmpl = this.view.render(new Meta());
-    this.sender.send(Reply.diff(this.id, tmpl.toParts()));
+    var content = this.view.render(new Meta());
+    this.sender.send(Reply.diff(this.id, diffParts(content)));
   }
 
   @Override
@@ -121,5 +126,33 @@ public class WsContext implements Context {
   public void handleError(Object err) {
     // TODO send something to client to reload?
     this.handleClose();
+  }
+
+  /**
+   * diffParts takes the new template and diffs it with the last template (if there was one)
+   * and returns the diff "parts" to send to the client.  Additionally, this method will
+   * add the title and events to the parts if they are set.
+   * @param newTmpl the new template to diff with the last template
+   * @return the diff "parts" to send to the client
+   */
+  public Map<String, Object> diffParts(UndeadTemplate newTmpl) {
+    var oldTmpl = this.lastTmpl;
+    this.lastTmpl = newTmpl;
+    var parts = newTmpl.toParts();
+    // if we have an old template diff with new template
+    if(oldTmpl != null) {
+      parts = UndeadTemplate.diff(oldTmpl.toParts(), newTmpl.toParts());
+    }
+    // add title if set
+    if(this.title != null) {
+      parts.put("t", this.title);
+      this.title = null;
+    }
+    // add events if set
+    if(this.events != null) {
+      parts.put("e", this.events);
+      this.events = null;
+    }
+    return parts;
   }
 }
