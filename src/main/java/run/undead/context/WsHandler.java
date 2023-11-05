@@ -89,8 +89,7 @@ public class WsHandler {
               var content = view.render(new Meta());
 
               // instead of serializing as HTML string, we send back the parts data structure
-              var parts = content.toParts();
-              wsSender.send(Reply.rendered(msg, parts));
+              wsSender.send(Reply.rendered(msg, context.diffParts(content)));
               break;
             // TODO case "lvu" i.e. uploads
             default: // unknown phx_join topic
@@ -144,8 +143,7 @@ public class WsHandler {
           }
           // otherwise rerender
           var content = context.view.render(new Meta());
-          var parts = content.toParts();
-          wsSender.send(Reply.replyDiff(msg, parts));
+          wsSender.send(Reply.replyDiff(msg, context.diffParts(content)));
           break;
         default:
           throw new RuntimeException("unhandled event:" + msg.event());
