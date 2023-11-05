@@ -391,6 +391,36 @@ public class UndeadTemplate {
   }
 
   /**
+   * diff returns a diff of the two templates "parts" (i.e. the parts returned by {@link #toParts()}
+   * as a Map of String to Object.  In other words, it takes creates a new "parts" Map that contains
+   * only the parts that are different between the two templates.
+   * @param left the left template
+   * @param right the right template
+   * @return a diff of the two templates "parts" keeping only the parts that are different from the right template
+   */
+  public static Map<String, Object> diff(Map<String, Object> left, Map<String, Object> right) {
+    var partsDiff = Maps.difference(left, right);
+    if(partsDiff.areEqual()) {
+      return Map.of();
+    }
+    // for keys that differ, we need to check if we can recurse further
+    var diffMap = new LinkedHashMap<String, Object>();
+    for(var entry : partsDiff.entriesDiffering().entrySet()) {
+      var key = entry.getKey();
+      var lv = entry.getValue().leftValue();
+      var rv = entry.getValue().rightValue();
+      // if they are both maps then recurse
+      if(lv instanceof Map && rv instanceof Map) {
+        diffMap.put(key, diff((Map<String, Object>)lv, (Map<String, Object>)rv));
+        continue;
+      }
+      // otherwise just take the right value
+      diffMap.put(key, rv);
+    }
+    return diffMap;
+  }
+
+  /**
    * toString returns the HTML string representation of the template
    * @return the HTML string representation of the template
    */
