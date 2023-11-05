@@ -8,6 +8,12 @@ run-example:
 # build the undead js
 build-js:
     cd js; npm i; npm run build; cd ..
+    @echo "remember to restart the server"
+
+# build dev js
+build-dev-js:
+    cd js; npm i; npm run build-dev; cd ..
+    @echo "remember to restart the server"
 
 # release to maven central
 release: && open-sonatype
