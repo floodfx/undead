@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "build / customize client javascript for Undead projects",
   "scripts": {
-    "build": "esbuild undead.ts --minify --bundle --sourcemap --outfile=../src/main/resources/public/js/undead.js --drop:console --target=es2020"
+    "build": "esbuild undead.ts --minify --bundle --sourcemap --outfile=../src/main/resources/public/js/undead.js --drop:console --target=es2020",
+    "build-dev": "esbuild undead.ts --bundle --sourcemap --outfile=../src/main/resources/public/js/undead.js --target=es2020"
   },
   "dependencies": {
     "phoenix": "^1.7.9",
