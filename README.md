@@ -5,30 +5,23 @@
 ## What is Undead?
 
 `Undead` is dead-serious library for JVM devs who want to build scary fast, bewitching front-end experiences on the JVM
-*without writing javascript* 🙀.
+*without writing javascript* 🙀.  
 
 `Undead` is a LiveView implementation for the JVM. (The name "Undead" is a play on the "Live" part of LiveViews 👻.)
 LiveViews let you build front-end experiences like those you can build with [React](https://react.dev)
 or [Vue.js](https://vuejs.org)
-but all without leaving the server.
+but all without leaving the server.  (See [what is a liveview](#what-is-a-liveview) for more details on LiveViews but 
+you don't need to know what a LiveView is to use `Undead`.)
 
-At a high level, a Live...err... an UndeadView, is a server process that receives events (clicks, form input, etc) from
-the browser, updates
-its state, and sends back diffs which are applied to the browser. You could say it makes "spooky action at a
-distance"  very easy for developers ✨. `Undead` handles all the spine-chillingly difficult things; automatically routing
-events, providing a clean API for devs, and rendering (and diffing) the HTML, and applying those diffs efficiently so
-the
-developers can just focus on enchanting their users.
+### NOTE: Undead relies on Java 21 Preview Features
+`Undead` is built on top [StringTemplate](https://openjdk.org/jeps/430)s which is a "Preview Feature" of Java 21.  In order to 
+build and run `Undead` apps you have to run your IDE and/or the JVM with the `--enable-preview` flag and target Java `21`.  The `pom.xml` 
+in this repo show you where you need to add flags.  If you are running IntelliJ you have to futz with the settings...again this repo ships
+with the IntelliJ settings.  I don't know about Eclipse and last time I checked VSCode plugins they didn't support Java 21 yet.  
 
-LiveViews where invented and popularized by the [Phoenix Framework](https://www.phoenixframework.org/) which is written
-in Elixir and
-runs on the Erlang VM. Obviously, `Undead` is not Elixir or Erlang but it adheres to the LiveView protocol and reuses
-the client-side
-javascript from the Phoenix Framework.  (Suffice it to say, the Phoenix Framework is awesome and kudos to the
-Elixir/Erlang community for
-inventing LiveViews! 🙌)
+Sometimes you have to work a little to be on the bleeding edge...🔪
 
-## 🍬 Treats of Undead (and LiveViews in general)
+## 🍬 Benefits of building apps with Undead
 
 * No need to write javascript
 * Very fast, SEO-friendly, fully rendered HTML initial response
@@ -37,9 +30,24 @@ inventing LiveViews! 🙌)
 * Modern, type-safe templating engine (String Templates)
 * Just another route on your existing web server
 
+Further `Undead` does the following:
+* Makes _normal_ things **trivial**
+  * Dynamic, validated forms that map into model objects (and vice versa)
+  * Dynamic page updates based on user actions (clicks, keys, focus, etc)
+  * Debounce and throttle user events with ease
+* Makes _hard_ things **easy**
+  * File uploads with drag-n-drop, progress, and image previews
+  * Multiplayer UIs, presence, and other real-time interactions using pub/sub
+  * Only ship diffs reducing network overhead by huge amounts (transparent to dev btw)
+* Makes _expensive_/_complicated_ things **unecessary**
+  * No need for REST or GraphQL APIs (but easier to integrate with them if you do)
+  * No need for front-end vs back-end code bases, FE vs BE state synchronization, etc
+  * No need to build or maintain a large Javascript component library
+  * No need to write Javascript period.
+
 ## 🦠 Current Status: Incubating / Alpha
 
-`Undead` is currently in the "incubating" stage. It is probably not yet ready for production but "it's alive!🧟" and
+`Undead` is currently in the "incubating" stage. It is probably not yet ready for production but "it's alive!" and
 a decent chunk of functionality is implemented along with pretty good documentation (especially the javadocs). If you
 aren't too afraid 👻 you can try it out and provide feedback. Check out working examples in
 the [example](src/main/java/run/undead/javalin/example)
@@ -352,7 +360,25 @@ Most of these are advanced features or internal details that you don't need to k
 - [ ] UndeadComponents (i.e. LiveComponents)
 - [x] Building Client Javascript
 - [x] JS Commands
-- [ ] Pub/Sub
+- [x] Pub/Sub
+
+## What is a LiveView?
+At a high level, a Live...err... an UndeadView, is a server process that receives events (clicks, form input, etc) from
+the browser, updates
+its state, and sends back diffs which are applied to the browser. You could say it makes "spooky action at a
+distance"  very easy for developers ✨. `Undead` handles all the spine-chillingly difficult things; automatically routing
+events, providing a clean API for devs, and rendering (and diffing) the HTML, and applying those diffs efficiently so
+the
+developers can just focus on enchanting their users.
+
+LiveViews where invented and popularized by the [Phoenix Framework](https://www.phoenixframework.org/) which is written
+in Elixir and
+runs on the Erlang VM. Obviously, `Undead` is not Elixir or Erlang but it adheres to the LiveView protocol and reuses
+the client-side
+javascript from the Phoenix Framework.  (Suffice it to say, the Phoenix Framework is awesome and kudos to the
+Elixir/Erlang community for
+inventing LiveViews! 🙌)
+
 
 ## Feedback Welcome
 
