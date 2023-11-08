@@ -50,7 +50,7 @@ import java.util.stream.IntStream;
  *      <li>{@link Directive#If} - show an {@link UndeadTemplate} based on conditional logic</li>
  *      <li>{@link Directive#Range} - iterate over a range of ints</li>
  *      <li>{@link Directive#Switch} - display specific {@link UndeadTemplate} based on value</li>
- *      <li>{@link Directive#Map} - map a collection to an {@link UndeadTemplate}</li>
+ *      <li>{@link Directive#For} - map a collection to an {@link UndeadTemplate}</li>
  *      <li>{@link Directive#Join} - concatenate a collection of {@link UndeadTemplate}s</li>
  *    </ul>
  *  </p>
@@ -215,9 +215,15 @@ public class UndeadTemplate {
           "=", "&#x3D;");
   private static final Pattern ENT_REGEX = Pattern.compile(String.join("|", ENTITIES.keySet()));
   private final StringTemplate raw;
+  protected Boolean escape;
 
   public UndeadTemplate(StringTemplate template) {
+    this(template, true);
+  }
+
+  public UndeadTemplate(StringTemplate template, Boolean escape) {
     this.raw = template;
+    this.escape = escape;
   }
 
 
@@ -230,16 +236,17 @@ public class UndeadTemplate {
         });
   }
 
-  private static final String escapeHTML(Object input) {
+  private static final String escapeHTML(Object input, Boolean escapeTemplates) {
     switch (input) {
       case null -> {
         return "";
       }
       case UndeadTemplate t -> {
+        t.escape = escapeTemplates;
         return t.toString();
       }
       case JS js -> {
-        return escapeHTML(js.toJSON());
+        return escapeHTML(js.toJSON(), null);
       }
       case List l -> {
         // get first element of list to determine type
@@ -249,6 +256,10 @@ public class UndeadTemplate {
         var first = l.get(0);
         if(first instanceof UndeadTemplate) {
           // concatenate all templates
+          // set all templates to escape then concat them
+          for(var tmpl : (List<UndeadTemplate>)l) {
+            tmpl.escape = escapeTemplates;
+          }
           return concat((List<UndeadTemplate>) l).toString();
         }
         else if(first instanceof String) {
@@ -364,7 +375,7 @@ public class UndeadTemplate {
                     }
                     case JS js -> {
                       // TODO peek if in attribute with single or double quotes and if single then don't escape
-                      val = escapeHTML(js);
+                      val = escapeHTML(js, null);
                     }
                     // TODO handle live components
                     case List list -> {
@@ -406,10 +417,10 @@ public class UndeadTemplate {
                       );
                     }
                     case String s -> {
-                      val = escapeHTML(s);
+                      val = escapeHTML(s, null);
                     }
                     case Number n -> {
-                      val = escapeHTML(String.valueOf(n));
+                      val = escapeHTML(String.valueOf(n), null);
                     }
                     default -> {
                       throw new RuntimeException("Unexpected type in LiveTemplate:" + item.getClass() + " "+item);
@@ -432,6 +443,7 @@ public class UndeadTemplate {
    * @return a diff of the two templates "parts" keeping only the parts that are different from the right template
    */
   public static Map<String, Object> diff(Map<String, Object> left, Map<String, Object> right) {
+    System.out.println("diff:" + left + "\n " + right);
     var partsDiff = Maps.difference(left, right);
     if(partsDiff.areEqual()) {
       return Map.of();
@@ -459,10 +471,13 @@ public class UndeadTemplate {
    */
   @Override
   public String toString() {
+    if (!this.escape) {
+      return this.raw.interpolate();
+    }
     var newValues = new ArrayList<>();
 
     for (Object value : this.raw.values()) {
-      newValues.add(escapeHTML(value));
+      newValues.add(escapeHTML(value, this.escape));
     }
 
     return StringTemplate.interpolate(this.raw.fragments(), newValues);
