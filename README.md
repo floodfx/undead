@@ -75,7 +75,7 @@ If you are brave enough to try it out, you can add `Undead` to your project by a
 <dependency>
     <groupId>run.undead</groupId>
     <artifactId>undead-core</artifactId>
-    <version>0.0.14</version>
+    <version>0.0.15</version>
 </dependency>
 ```
 
