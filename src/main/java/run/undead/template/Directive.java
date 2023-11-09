@@ -10,6 +10,10 @@ import java.util.stream.IntStream;
 
 import static run.undead.template.Undead.EMPTY;
 
+/**
+ * Directive contains functions that can be used in templates to control the flow of the template or otherwise
+ * provide common functionality in templates.
+ */
 public class Directive {
 
 
@@ -112,13 +116,16 @@ public class Directive {
   }
 
   /**
-   * Map applies a function to each element of a collection and returns a list of the results
+   * For applies a function to each element of a collection and returns a list of the results
    * @param collection collection of data to map over
    * @param func function to apply to each element of the collection
    * @return a list of the results of applying the function to each element of the collection
    * @param <T>
    */
-  public static <T> List<UndeadTemplate> Map(Collection<T> collection, Function<T, UndeadTemplate> func) {
+  public static <T> List<UndeadTemplate> For(Collection<T> collection, Function<T, UndeadTemplate> func) {
+    if(collection == null) {
+      return List.of();
+    }
     return collection.stream().map(func).collect(Collectors.toList());
   }
 
