@@ -185,7 +185,7 @@ A simple example of `Undead.HTML` in action is below:
 Undead.HTML."Hello, \{ name }!";
 
 // Multiline
-    Undead.HTML."""
+Undead.HTML."""
   <div class="flex flex-col space-y-4 mx-4">
     <h2 class="text-2xl">Hello, \{ name }!</h2>      
   </div>
@@ -213,9 +213,8 @@ of the built-in directives:
   if there is a match
   the corresponding template is returned. If there is no match, the default template is returned (or an empty template
   if there is no default).
-* `Map` Directive - `Map` enables transforming a collection of values into a collection of templates. The provided
-  collection is iterated over
-  and the provided template function is applied to each value in the collection.
+* `For` Directive - `For` enables transforming a collection of values into a collection of templates. The provided
+  collection is iterated applying the provided template function to each value in the collection.
 * `Range` Directive - `Range` enables iterating over a range of integer values optionally by a given step.
 * `Join` Directive - `Join` enabled joining a collection of templates together with a given separator template.
 
@@ -236,7 +235,7 @@ HTML."""
   """;
 
 // If/Else Directive
-    HTML."""
+HTML."""
   <div>\{ 
     If(brainsEaten < 10, 
       HTML."Need more 🧠s...", 
@@ -246,7 +245,7 @@ HTML."""
   """;
 
 // Switch Directive
-    HTML."""
+HTML."""
   <div class="\{
     Switch(
       Case.of("blue".equals(color), HTML."text-blue"),
@@ -257,23 +256,23 @@ HTML."""
   </div>
 """;
 
-// Map Directive
-    HTML."""
+// For Directive
+HTML."""
   <ul>
-    \{ Map(zombies, zombie -> HTML."<li>\{ zombie.name }</li>") }
+    \{ For(zombies, zombie -> HTML."<li>\{ zombie.name }</li>") }
   </ul>
 """;
 
 // Range Directive
-    HTML."""
-  \{Map(
+HTML."""
+  \{For(
       Range(10),
       i -> HTML."<div>Step \{i}</div>"
   )}
 """;
 // Range Directive with step
-    HTML."""
-  \{Map(
+HTML."""
+  \{For(
       Range(2, 10, 2),
       i -> HTML."<div>\{i}</div>"
   )}
@@ -348,13 +347,13 @@ protocol fairly well at this point.
 Most of these are advanced features or internal details that you don't need to know about to use Undead.
 ~~This is very early / PoC stage / "nothing works".~~ The basics work:
 
-- [x] Templating - `Undead.HTML`, `If`, `Switch`, `Map`, `Range`, `Join` Directives
+- [x] Templating - `Undead.HTML`, `If`, `Switch`, `For`, `Range`, `Join` Directives
 - [x] Message JSON parsing and generation
 - [x] Basic Protocol `phx-join`, `heartbeat`, page events (`click`, `keyup`, `blur`, etc) and `form` events
 - [x] Internal Events (i.e. InfoEvents)
 - [x] Example Project - Javalin + Undead with examples: `UndeadCounter`, `UndeadUserForm`, `UndeadSalesDashnoard`
-- [ ] Parts Diffing
-- [ ] Push Events
+- [x] Parts Diffing
+- [x] Push Events
 - [ ] Live Patch / Navigation
 - [ ] File Uploads
 - [ ] UndeadComponents (i.e. LiveComponents)
