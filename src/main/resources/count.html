@@ -1,0 +1,24 @@
+{% extends "peb.html" %}
+
+
+    {% block title %}<div class="text-2xl">Zombie Count</div>{% endblock %}
+    {% block content %}
+    <div class="flex items-center space-x-4">
+        <button class="btn btn-primary"
+                {% if count <= 0 %}
+                    disabled
+                {% else %}
+                {% endif %} type="button" ud-click="dec">-</button>
+        <span class="countdown font-mono text-6xl
+            {% if count == 0 %}
+                text-neutral
+            {% elseif count <= 9 %}
+                text-warning
+            {% elseif count > 9 %}
+              text-error
+            {% endif %}">
+        <span style="--value:{{ count }};"></span>
+        </span>
+        <button class="btn btn-primary" type="button" ud-click="inc">+</button>
+    </div>
+    {% endblock %}
