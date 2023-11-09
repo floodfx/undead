@@ -1,12 +1,12 @@
 package run.undead.context;
 
+import okhttp3.HttpUrl;
 import run.undead.handle.http.RequestAdaptor;
 import run.undead.template.*;
 import run.undead.view.Meta;
 import run.undead.view.View;
-import okhttp3.HttpUrl;
 
-import java.util.Map;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -47,11 +47,11 @@ public class HttpHandler {
     var ctx = new HttpContext(viewId, adaptor.url());
 
     // execute the `LiveView`'s `mount` function, passing in the data from the HTTP request
-    var params = Map.of(
-        "_csrf_token", csrfToken,
-        "_mounts", -1
-        // TODO path params
-    );
+    var params = new HashMap<>();
+    params.put("_csrf_token", csrfToken);
+    params.put("_mounts", -1);
+    params.putAll(adaptor.pathParams());
+    params.putAll(adaptor.queryParams());
 
     // Step 1: call mount
     view.mount(ctx, sessionData, params);//socket, sessionData, params
