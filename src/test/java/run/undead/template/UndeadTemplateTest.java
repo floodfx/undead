@@ -43,7 +43,7 @@ public class UndeadTemplateTest {
   public void testMap() {
     var items = List.of("foo", "bar", 1, false);
     var template = HTML."""
-      \{ Map(items, item -> HTML."<div>\{item}</div>")}
+      \{ For(items, item -> HTML."<div>\{item}</div>")}
     """.trim();
     assertEquals("<div>foo</div><div>bar</div><div>1</div><div>false</div>", template.toString());
   }
@@ -53,7 +53,7 @@ public class UndeadTemplateTest {
     var items = List.of("foo", "bar", 1, false);
     var template = HTML."""
       \{ Join(
-          Map(items, item -> HTML."<div>\{item}</div>"),
+          For(items, item -> HTML."<div>\{item}</div>"),
         HTML."|"
       )}
     """.trim();
@@ -86,7 +86,7 @@ public class UndeadTemplateTest {
   @Test
   public void testRange() {
     var template = HTML."""
-      \{ Map(
+      \{ For(
           Range(10),
           i -> HTML."<div>\{i}</div>"
       )}
@@ -94,7 +94,7 @@ public class UndeadTemplateTest {
     assertEquals("<div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div>", template.toString());
 
     template = HTML."""
-      \{ Map(
+      \{ For(
           Range(2, 10, 2),
           i -> HTML."<div>\{i}</div>"
       )}
@@ -103,7 +103,7 @@ public class UndeadTemplateTest {
 
     // negative step
     template = HTML."""
-      \{ Map(
+      \{ For(
           Range(10, 2, -2),
           i -> HTML."<div>\{i}</div>"
       )}
@@ -164,7 +164,7 @@ public class UndeadTemplateTest {
   void testEmptyArray() {
     var list = List.of();
     var template = HTML."""
-      \{ Map(null,
+      \{ For(null,
           i -> {
         return HTML."<div>\{i}</div>";
       }
@@ -177,7 +177,7 @@ public class UndeadTemplateTest {
   @Test
   void testArray() {
     var template = HTML."""
-      \{ Map(List.of(100,101),
+      \{ For(List.of(100,101),
           i -> {
         return HTML."<div>\{i}</div>";
       }

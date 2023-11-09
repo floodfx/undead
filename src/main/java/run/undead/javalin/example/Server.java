@@ -12,6 +12,9 @@ import run.undead.template.Undead;
 
 import java.util.List;
 
+import static run.undead.template.Directive.For;
+import static run.undead.template.Undead.HTML;
+
 /**
  * Server is a simple Javalin server that uses Undead to render rich, dynamic views.
  */
@@ -40,7 +43,7 @@ public class Server {
               new ExCard("Sales Dashboard", "A sales dashboard that shows sales data in a chart.", "/dashboard"),
               new ExCard("User Form", "A user form that shows how easy it is to use forms.", "/user/new")
           );
-          var html = Undead.HTML."""
+          var html = HTML."""
           <!DOCTYPE html>
           <html lang="en">
             <head>
@@ -56,8 +59,8 @@ public class Server {
               <div class="navbar bg-base-100 mb-4 border-b">
                 <a class="btn btn-ghost normal-case text-xl">🧟Undead</a>
               </div>
-                <div class="flex gap-x-4 justify-center items-center">
-                  \{ Directive.Map(examples, ex -> ex.render()) }
+                <div class="flex flex-wrap gap-4 justify-center items-center">
+                  \{ For(examples, ex -> ex.render()) }
                 </div>
             </body>
           </html>
