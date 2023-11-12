@@ -6,9 +6,8 @@ import run.undead.config.Config;
 import run.undead.javalin.example.view.UndeadCounter;
 import run.undead.javalin.example.view.UndeadSalesDashboard;
 import run.undead.javalin.example.view.UndeadUserForm;
+import run.undead.javalin.example.view.UndeadVolumeControl;
 import run.undead.javalin.example.view.tags.ExCard;
-import run.undead.template.Directive;
-import run.undead.template.Undead;
 
 import java.util.List;
 
@@ -35,13 +34,15 @@ public class Server {
         .undead("/count/{start}", new UndeadCounter())
         .undead("/dashboard", new UndeadSalesDashboard())
         .undead("/user/new", new UndeadUserForm())
+        .undead("/volume", new UndeadVolumeControl())
         .javalin() // get the underlying Javalin instance from UndeadJavalin
         .get("/", ctx -> {
 
           var examples = List.of(
               new ExCard("Counter", "A simple counter that can be incremented and decremented.", "/count"),
               new ExCard("Sales Dashboard", "A sales dashboard that shows sales data in a chart.", "/dashboard"),
-              new ExCard("User Form", "A user form that shows how easy it is to use forms.", "/user/new")
+              new ExCard("User Form", "A user form that shows how easy it is to use forms.", "/user/new"),
+              new ExCard("Volume Control", "A Kotlin-based volume control that shows how to use a keyboard input.", "/volume")
           );
           var html = HTML."""
           <!DOCTYPE html>
