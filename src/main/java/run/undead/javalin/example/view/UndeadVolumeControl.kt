@@ -9,9 +9,10 @@ import run.undead.view.View
 import kotlin.math.max
 import kotlin.math.min
 
-
-data class Simple(val name: String)
-
+/**
+ * UndeadVolumeControl is an Undead View that renders a volume control that updates
+ * the volume when the user presses the arrow keys.
+ */
 class UndeadVolumeControl : View {
     var volume: Int = 30
 
@@ -29,6 +30,7 @@ class UndeadVolumeControl : View {
         }
     }
 
+    // Can't use Java StringTemplates in Kotlin so load this from a Java class
     override fun render(meta: Meta?): UndeadTemplate {
         return Tmpl.volumeTemplate(volume)
     }
