@@ -338,7 +338,7 @@ and didn't find anything that was ideal but when I learned about String Template
 and waited for them to be released. Once they were released, it was just a matter of dusting off the ol' Java skills
 (still very rusty - thank you very much).
 
-It also helps that I've written (or co-written) LiveView libraries for [Javascript](https://liveviewjs)
+It also helps that I've written (or co-written) LiveView libraries for [Javascript](https://liveviewjs.com)
 and [Go](https://github.com/canopyclimate/golive) so know the
 protocol fairly well at this point.
 
